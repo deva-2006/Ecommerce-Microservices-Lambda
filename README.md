@@ -6,25 +6,9 @@ The application consists of independent microservices deployed as AWS Lambda fun
 
 ---
 
-# Architecture
+## Architecture Diagram
 
-```
-                    Client
-                       │
-                       ▼
-              Amazon API Gateway
-                       │
- ┌─────────────┬─────────────┬─────────────┬─────────────┐
- ▼             ▼             ▼             ▼             ▼
-Product     Inventory      Cart         Order       Payment
- Lambda       Lambda      Lambda       Lambda       Lambda
- │              │            │             │             │
- ▼              ▼            ▼             ▼             ▼
-Products     Inventory      Cart        Orders      Payments
- DynamoDB      DynamoDB    DynamoDB    DynamoDB    DynamoDB
-```
-
----
+![Architecture Diagram](architecture-diagram.png)
 
 # Tech Stack
 
