@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.net.URI;
 @Configuration
+
 public class DynamoDbConfig {
 
     @Value("${aws.dynamodb.region}")
