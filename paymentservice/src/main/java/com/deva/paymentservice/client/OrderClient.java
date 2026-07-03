@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "order-service") //used to
+@FeignClient(
+        name = "order-service",
+        url = "${gateway.url}"
+)
 public interface OrderClient {
 
     @PutMapping("/orders/{orderId}/status")

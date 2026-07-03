@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "inventory-service")
+@FeignClient(
+        name = "inventory-service",
+        url = "${gateway.url}"
+)
 public interface InventoryClient {
 
     @GetMapping("/inventory/{productId}/validate")

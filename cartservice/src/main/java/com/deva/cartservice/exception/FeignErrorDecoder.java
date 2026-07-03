@@ -1,5 +1,9 @@
 package com.deva.cartservice.exception;
 
+// TODO: FeignErrorDecoder is no longer used - Feign has been replaced with RestClient pattern.
+// This class can be removed once all error handling is refactored for RestClient-based calls.
+// For now, we comment it out to allow compilation to proceed.
+/*
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import org.springframework.stereotype.Component;
@@ -37,3 +41,4 @@ public class FeignErrorDecoder implements ErrorDecoder {
         };
     }
 }
+*/

@@ -41,10 +41,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
-        return productRepository.findAll()
-                .stream().map(this::toResponse).collect(Collectors.toList());
-    }
 
+        System.out.println("===== SERVICE START =====");
+
+        List<Product> products = productRepository.findAll();
+
+        System.out.println("===== FINDALL SUCCESS =====");
+
+        return products.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
     @Override
     public ProductResponseDTO updateProduct(String productId, ProductRequestDTO request) {
         Product product = productRepository.findById(productId)
