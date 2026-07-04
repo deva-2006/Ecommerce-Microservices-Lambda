@@ -1,8 +1,8 @@
 # 🛒 Serverless E-Commerce Microservices Backend
-cahnged
-A cloud-native serverless e-commerce backend built using **Spring Boot 3**, **Java 21**, **AWS Lambda**, **Amazon API Gateway**, and **Amazon DynamoDB**.
 
-The application consists of independent microservices deployed as AWS Lambda functions and exposed through a shared HTTP API Gateway, providing a scalable backend for an e-commerce platform.
+A cloud-native serverless e-commerce backend built using **Spring Boot 3**, **Java 21**, **AWS Lambda**, **Amazon API Gateway**, **Amazon DynamoDB**, and **Amazon Cognito**.
+
+The application consists of independent microservices deployed as AWS Lambda functions behind a shared HTTP API Gateway. Authentication is handled using **Amazon Cognito** and **API Gateway JWT Authorizers**, providing a secure, scalable, and production-style backend architecture.
 
 ---
 
@@ -10,9 +10,11 @@ The application consists of independent microservices deployed as AWS Lambda fun
 
 ![Architecture Diagram](architecture-diagram.png)
 
+---
+
 # Tech Stack
 
-### Backend
+## Backend
 
 - Java 21
 - Spring Boot 3
@@ -21,11 +23,12 @@ The application consists of independent microservices deployed as AWS Lambda fun
 - REST APIs
 - Maven
 
-### Cloud
+## Cloud
 
 - AWS Lambda
-- Amazon API Gateway
+- Amazon API Gateway (HTTP API)
 - Amazon DynamoDB
+- Amazon Cognito
 - AWS IAM
 - Amazon CloudWatch
 
@@ -43,12 +46,72 @@ The application consists of independent microservices deployed as AWS Lambda fun
 
 ---
 
+# Authentication
+
+Authentication is implemented using **Amazon Cognito**.
+
+### Components
+
+- Amazon Cognito User Pool
+- Cognito App Client
+- API Gateway JWT Authorizer
+- JWT Access Tokens
+
+### Authentication Flow
+
+```
+Client
+      │
+      │ Login
+      ▼
+Amazon Cognito
+      │
+      │ Issues JWT
+      ▼
+Client
+      │
+      │ Authorization: Bearer <JWT>
+      ▼
+Amazon API Gateway
+      │
+      │ JWT Authorizer
+      ▼
+AWS Lambda Microservices
+```
+
+### User Identification
+
+The backend no longer trusts client-provided user IDs.
+
+Previous request:
+
+```json
+{
+    "userId": "user001",
+    "productId": "P101",
+    "quantity": 2
+}
+```
+
+Current request:
+
+```json
+{
+    "productId": "P101",
+    "quantity": 2
+}
+```
+
+The authenticated user's identity is extracted directly from the validated JWT.
+
+---
+
 # Cloud Deployment
 
 Each microservice is deployed independently as an AWS Lambda function.
 
 | Lambda Function |
-|----------------|
+|-----------------|
 | product-service-lambda |
 | inventory-service-lambda |
 | cart-service-lambda |
@@ -59,7 +122,7 @@ Each microservice is deployed independently as an AWS Lambda function.
 
 # API Gateway
 
-A single Amazon HTTP API Gateway acts as the entry point.
+A shared Amazon HTTP API Gateway acts as the entry point.
 
 ```
 Client
@@ -73,6 +136,8 @@ Amazon API Gateway
    ├── /orders
    └── /payments
 ```
+
+Protected endpoints are secured using API Gateway JWT Authorizers backed by Amazon Cognito.
 
 ---
 
@@ -88,7 +153,7 @@ Amazon API Gateway
 
 # Service Communication
 
-The services communicate internally using OpenFeign through the shared API Gateway.
+The microservices communicate internally using OpenFeign through the shared API Gateway.
 
 ```
 Cart
@@ -105,6 +170,8 @@ Payment
  └──► Order
 ```
 
+Protected service-to-service communication forwards the authenticated user's JWT to downstream services.
+
 ---
 
 # Features
@@ -113,6 +180,11 @@ Payment
 - RESTful APIs
 - Independent Microservices
 - Amazon DynamoDB Integration
+- Amazon Cognito Authentication
+- JWT Authorization
+- API Gateway JWT Authorizers
+- OpenFeign Inter-Service Communication
+- JWT Propagation Between Services
 - API Gateway Routing
 - Lambda-based Deployment
 - CloudWatch Logging
@@ -139,6 +211,7 @@ Each service contains:
 - Entities
 - Lambda Handler
 - DynamoDB Configuration
+- Cognito JWT Integration
 
 ---
 
@@ -157,6 +230,9 @@ AWS Lambda
 Amazon API Gateway
         │
         ▼
+Amazon Cognito JWT Authorizer
+        │
+        ▼
 Client
 ```
 
@@ -166,17 +242,20 @@ Client
 
 The APIs were tested using:
 
-- AWS Lambda Test Events
+- Amazon Cognito Authentication
 - Postman
+- AWS Lambda Test Events
+- HTTP API Gateway
 
 ---
 
 # Future Enhancements
 
-- Spring Security + JWT Authentication
-- Event-Driven Architecture using Amazon SNS & Amazon SQS
+- Amazon SNS & Amazon SQS Event-Driven Architecture
+- AWS Step Functions for Order Workflow
 - Frontend Deployment using Amazon S3 & CloudFront
-- CI/CD with GitHub Actions
+- CI/CD using GitHub Actions
+- Infrastructure as Code using AWS SAM or Terraform
 
 ---
 
@@ -184,6 +263,6 @@ The APIs were tested using:
 
 **Deva**
 
-Final Year B.Tech Artificial Intelligence & Data Science
+B.Tech Artificial Intelligence & Data Science
 
-Java Backend Developer | Spring Boot | AWS Serverless
+**Java Backend Developer | Spring Boot | AWS Serverless | Amazon Cognito**
