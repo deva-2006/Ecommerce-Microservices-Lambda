@@ -6,7 +6,7 @@ import com.deva.orderservice.dto.OrderResponseDTO;
 import java.util.List;
 
 public interface OrderService {
-    OrderResponseDTO createOrder(OrderRequestDTO request);
+    OrderResponseDTO createOrder(String userId, OrderRequestDTO request);
     OrderResponseDTO getOrderById(String orderId);
     List<OrderResponseDTO> getOrdersByUserId(String userId);
     OrderResponseDTO updateOrderStatus(String orderId, String status);

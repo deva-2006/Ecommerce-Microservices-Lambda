@@ -28,21 +28,18 @@ public class OrderServiceImpl implements OrderService {
     private final PaymentClient paymentClient;
 
     @Override
-    public OrderResponseDTO createOrder(OrderRequestDTO request) {
+    public OrderResponseDTO createOrder(String userId, OrderRequestDTO request) {
 
-        // Step 1: Fetch cart items
-        List<CartItemDTO> cartItems = cartClient.getCartByUserId(request.getUserId());
+        List<CartItemDTO> cartItems = cartClient.getCartByUserId();
         if (cartItems == null || cartItems.isEmpty()) {
-            throw new IllegalStateException("Cart is empty for userId: " + request.getUserId());
+            throw new IllegalStateException("Cart is empty for userId: " + userId);
         }
 
-        // Step 2: Validate product exists + validate stock
         for (CartItemDTO item : cartItems) {
             productClient.getProductById(item.getProductId());
             inventoryClient.validateStock(item.getProductId(), item.getQuantity());
         }
 
-        // Step 3: Build order items
         List<OrderItem> orderItems = cartItems.stream()
                 .map(item -> OrderItem.builder()
                         .productId(item.getProductId())
@@ -57,10 +54,9 @@ public class OrderServiceImpl implements OrderService {
                 .mapToDouble(OrderItem::getSubtotal)
                 .sum();
 
-        // Step 4: Save order as PENDING without paymentId first
         Order order = Order.builder()
                 .orderId(UUID.randomUUID().toString())
-                .userId(request.getUserId())
+                .userId(userId)
                 .items(orderItems)
                 .totalAmount(totalAmount)
                 .status("PENDING")
@@ -70,23 +66,19 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.save(order);
 
-        // Step 5: Create payment
         PaymentResponseDTO payment = paymentClient.createPayment(
                 PaymentRequestDTO.builder()
                         .orderId(order.getOrderId())
-                        .userId(order.getUserId())
                         .amount(order.getTotalAmount())
                         .paymentMethod(request.getPaymentMethod())
                         .build()
         );
 
-        // Step 6: Update order with paymentId and save again — persists to DynamoDB
         order.setPaymentId(payment.getPaymentId());
         orderRepository.save(order);
 
         return toResponse(order);
     }
-
     @Override
     public void handlePostPaymentSuccess(String orderId, String userId) {
         Order order = orderRepository.findById(orderId)
@@ -100,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
             );
         }
 
-        cartClient.clearCart(userId);
+        cartClient.clearCart();
     }
 
     @Override

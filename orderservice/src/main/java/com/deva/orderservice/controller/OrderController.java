@@ -2,6 +2,7 @@ package com.deva.orderservice.controller;
 
 import com.deva.orderservice.dto.OrderRequestDTO;
 import com.deva.orderservice.dto.OrderResponseDTO;
+import com.deva.orderservice.security.AuthUserId;
 import com.deva.orderservice.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,10 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(request));
+    public ResponseEntity<OrderResponseDTO> createOrder(
+            @AuthUserId String userId,
+            @Valid @RequestBody OrderRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(userId, request));
     }
 
     @GetMapping("/{id}")
@@ -28,8 +31,8 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<OrderResponseDTO>> getOrdersByUserId(@PathVariable String userId) {
+    @GetMapping
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByUserId(@AuthUserId String userId) {
         return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 
@@ -46,11 +49,10 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
-    // Called by Payment Service after SUCCESS
     @PostMapping("/{id}/payment-success")
     public ResponseEntity<Void> handlePaymentSuccess(
             @PathVariable String id,
-            @RequestParam String userId) {
+            @AuthUserId String userId) {
         orderService.handlePostPaymentSuccess(id, userId);
         return ResponseEntity.noContent().build();
     }
