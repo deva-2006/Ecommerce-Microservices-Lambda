@@ -2,6 +2,7 @@ package com.deva.paymentservice.controller;
 
 import com.deva.paymentservice.dto.PaymentRequestDTO;
 import com.deva.paymentservice.dto.PaymentResponseDTO;
+import com.deva.paymentservice.security.AuthUserId;
 import com.deva.paymentservice.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,10 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<PaymentResponseDTO> createPayment(@Valid @RequestBody PaymentRequestDTO request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(request));
+    public ResponseEntity<PaymentResponseDTO> createPayment(
+            @AuthUserId String userId,
+            @Valid @RequestBody PaymentRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(userId, request));
     }
 
     @GetMapping("/{id}")
@@ -33,8 +36,8 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getPaymentsByOrderId(orderId));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<PaymentResponseDTO>> getByUserId(@PathVariable String userId) {
+    @GetMapping("/user")
+    public ResponseEntity<List<PaymentResponseDTO>> getByUserId(@AuthUserId String userId) {
         return ResponseEntity.ok(paymentService.getPaymentsByUserId(userId));
     }
 

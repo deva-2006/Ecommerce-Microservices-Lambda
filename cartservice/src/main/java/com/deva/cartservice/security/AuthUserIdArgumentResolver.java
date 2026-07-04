@@ -1,4 +1,4 @@
-package com.deva.paymentservice.security;
+package com.deva.cartservice.security;
 
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
 import com.amazonaws.serverless.proxy.model.HttpApiV2AuthorizerMap;

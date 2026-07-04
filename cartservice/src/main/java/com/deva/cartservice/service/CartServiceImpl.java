@@ -24,7 +24,7 @@ public class CartServiceImpl implements CartService {
     private final InventoryClient inventoryClient;
 
     @Override
-    public CartResponseDTO addToCart(CartRequestDTO request) {
+    public CartResponseDTO addToCart(String userId, CartRequestDTO request) {
 
         // Step 1: Verify product exists + fetch latest name and price
         ProductResponseDTO product = productClient.getProductById(request.getProductId());
@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
 
         // Step 3: Build cart item using trusted data from Product Service
         Cart cart = Cart.builder()
-                .userId(request.getUserId())
+                .userId(userId)
                 .productId(product.getProductId())
                 .productName(product.getName())
                 .price(product.getPrice())

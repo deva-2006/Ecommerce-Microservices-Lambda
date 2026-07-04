@@ -20,13 +20,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final OrderClient orderClient;
-
     @Override
-    public PaymentResponseDTO createPayment(PaymentRequestDTO request) {
+    public PaymentResponseDTO createPayment(String userId, PaymentRequestDTO request) {
         Payment payment = Payment.builder()
                 .paymentId(UUID.randomUUID().toString())
                 .orderId(request.getOrderId())
-                .userId(request.getUserId())
+                .userId(userId)
                 .amount(request.getAmount())
                 .paymentMethod(request.getPaymentMethod())
                 .status("PENDING")
@@ -34,7 +33,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
         return toResponse(paymentRepository.save(payment));
     }
-
     @Override
     public PaymentResponseDTO getPaymentById(String paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
@@ -78,7 +76,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (orderStatus != null) {
             orderClient.updateOrderStatus(payment.getOrderId(), orderStatus);
             if ("SUCCESS".equalsIgnoreCase(status)) {
-                orderClient.handlePaymentSuccess(payment.getOrderId(), payment.getUserId());
+                orderClient.handlePaymentSuccess(payment.getOrderId());
             }
         }
 

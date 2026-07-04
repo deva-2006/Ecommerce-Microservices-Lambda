@@ -16,5 +16,5 @@ public interface OrderClient {
     void updateOrderStatus(@PathVariable String orderId, @RequestParam String status);
 
     @PostMapping("/orders/{orderId}/payment-success")
-    void handlePaymentSuccess(@PathVariable String orderId, @RequestParam String userId);
+    void handlePaymentSuccess(@PathVariable String orderId);
 }

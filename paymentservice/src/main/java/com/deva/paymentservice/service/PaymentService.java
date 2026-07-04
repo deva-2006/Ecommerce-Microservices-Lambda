@@ -6,7 +6,7 @@ import com.deva.paymentservice.dto.PaymentResponseDTO;
 import java.util.List;
 
 public interface PaymentService {
-    PaymentResponseDTO createPayment(PaymentRequestDTO request);
+    PaymentResponseDTO createPayment(String userId, PaymentRequestDTO request);
     PaymentResponseDTO getPaymentById(String paymentId);
     List<PaymentResponseDTO> getPaymentsByOrderId(String orderId);
     List<PaymentResponseDTO> getPaymentsByUserId(String userId);

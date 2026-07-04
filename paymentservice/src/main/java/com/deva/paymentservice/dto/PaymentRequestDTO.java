@@ -7,12 +7,8 @@ import lombok.Data;
 
 @Data
 public class PaymentRequestDTO {
-
     @NotBlank(message = "orderId is required")
     private String orderId;
-
-    @NotBlank(message = "userId is required")
-    private String userId;
 
     @NotNull(message = "amount is required")
     @Positive(message = "amount must be positive")
@@ -21,8 +17,6 @@ public class PaymentRequestDTO {
     @NotBlank(message = "paymentMethod is required")
     private String paymentMethod;
 }
-
-
 
 
 

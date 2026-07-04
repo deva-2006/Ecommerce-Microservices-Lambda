@@ -6,7 +6,7 @@ import com.deva.cartservice.dto.CartResponseDTO;
 import java.util.List;
 
 public interface CartService {
-    CartResponseDTO addToCart(CartRequestDTO request);
+    CartResponseDTO addToCart(String userId, CartRequestDTO request);
     List<CartResponseDTO> getCartByUserId(String userId);
     CartResponseDTO updateCartItem(String userId, String productId, Integer quantity);
     void deleteCartItem(String userId, String productId);

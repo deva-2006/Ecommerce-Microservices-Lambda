@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 public class CartRequestDTO {
 
-    @NotBlank(message = "userId is required")
-    private String userId;
 
     @NotBlank(message = "productId is required")
     private String productId;
