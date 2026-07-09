@@ -8,7 +8,7 @@ The application consists of independent microservices deployed as AWS Lambda fun
 
 ## Architecture Diagram
 
-![Architecture Diagram](architecture-diagram.png)
+![Architecture Diagram](architecture.png)
 
 ---
 
