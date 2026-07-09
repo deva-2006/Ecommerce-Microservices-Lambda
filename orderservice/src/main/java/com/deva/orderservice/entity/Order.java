@@ -22,8 +22,8 @@ public class Order {
     private String status;
     private String shippingAddress;
     private String createdAt;
+    private String fulfillmentStatus;
 
     @DynamoDbPartitionKey
     public String getOrderId() { return orderId; }
-
 }

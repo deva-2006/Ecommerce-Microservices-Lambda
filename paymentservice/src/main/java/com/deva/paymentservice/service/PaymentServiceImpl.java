@@ -8,7 +8,15 @@ import com.deva.paymentservice.exception.ResourceNotFoundException;
 import com.deva.paymentservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.PublishRequest;
+import java.util.Map;
+import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserRequest;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +28,17 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final OrderClient orderClient;
+    private final SnsClient snsClient;
+    private final ObjectMapper objectMapper;
+
+    @Value("${sns.payment-events.topic.arn}")
+    private String paymentEventsTopicArn;
+
+    private final CognitoIdentityProviderClient cognitoClient;
+
+    @Value("${cognito.userPoolId}")
+    private String userPoolId;
+
     @Override
     public PaymentResponseDTO createPayment(String userId, PaymentRequestDTO request) {
         Payment payment = Payment.builder()
@@ -33,6 +52,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
         return toResponse(paymentRepository.save(payment));
     }
+
     @Override
     public PaymentResponseDTO getPaymentById(String paymentId) {
         Payment payment = paymentRepository.findById(paymentId)
@@ -67,22 +87,54 @@ public class PaymentServiceImpl implements PaymentService {
         Payment updated = paymentRepository.save(payment);
 
         String orderStatus = switch (status.toUpperCase()) {
-            case "SUCCESS"  -> "CONFIRMED";
-            case "FAILED"   -> "CANCELLED";
+            case "SUCCESS" -> "CONFIRMED";
+            case "FAILED" -> "CANCELLED";
             case "REFUNDED" -> "REFUNDED";
-            default         -> null;
+            default -> null;
         };
 
         if (orderStatus != null) {
             orderClient.updateOrderStatus(payment.getOrderId(), orderStatus);
             if ("SUCCESS".equalsIgnoreCase(status)) {
-                orderClient.handlePaymentSuccess(payment.getOrderId());
+                publishPaymentSuccessEvent(payment.getOrderId(), payment.getUserId());
             }
         }
 
         return toResponse(updated);
     }
 
+    private void publishPaymentSuccessEvent(String orderId, String userId) {
+        try {
+            String email = fetchUserEmail(userId);
+
+            String message = objectMapper.writeValueAsString(
+                    Map.of("orderId", orderId, "email", email)
+            );
+
+            snsClient.publish(
+                    PublishRequest.builder()
+                            .topicArn(paymentEventsTopicArn)
+                            .message(message)
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to publish payment success event", e);
+        }
+    }
+
+    private String fetchUserEmail(String userId) {
+        AdminGetUserResponse response = cognitoClient.adminGetUser(
+                AdminGetUserRequest.builder()
+                        .userPoolId(userPoolId)
+                        .username(userId)
+                        .build()
+        );
+        return response.userAttributes().stream()
+                .filter(attr -> "email".equals(attr.name()))
+                .map(AttributeType::value)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Email not found for user: " + userId));
+    }
     private PaymentResponseDTO toResponse(Payment payment) {
         return PaymentResponseDTO.builder()
                 .paymentId(payment.getPaymentId())

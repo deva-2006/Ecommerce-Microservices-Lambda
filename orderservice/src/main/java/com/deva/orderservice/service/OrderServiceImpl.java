@@ -16,10 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Value;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+
+    @Value("${internal.secret}")
+    private String internalSecret;
 
     private final OrderRepository orderRepository;
     private final CartClient cartClient;
@@ -82,19 +85,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void handlePostPaymentSuccess(String orderId, String userId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Order not found: " + orderId));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found: " + orderId));
 
-        for (OrderItem item : order.getItems()) {
-            inventoryClient.deductStock(
-                    item.getProductId(),
-                    new StockDeductRequestDTO(item.getQuantity())
-            );
+        if ("FULFILLED".equals(order.getFulfillmentStatus())) {
+            return; // already processed, skip — safe on retry
         }
 
-        cartClient.clearCart();
-    }
+        for (OrderItem item : order.getItems()) {
+            inventoryClient.deductStock(item.getProductId(), new StockDeductRequestDTO(item.getQuantity()));
+        }
 
+        cartClient.clearCartInternal(order.getUserId(), internalSecret);
+
+        order.setFulfillmentStatus("FULFILLED");
+        orderRepository.save(order);
+    }
     @Override
     public OrderResponseDTO getOrderById(String orderId) {
         Order order = orderRepository.findById(orderId)
