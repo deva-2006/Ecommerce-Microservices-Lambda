@@ -16,7 +16,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
 
     static {
         try {
-            handler = SpringBootLambdaContainerHandler.getHttpApiV2ProxyHandler(OrderserviceApplication.class);
+            handler = SpringBootLambdaContainerHandler.getHttpApiV2ProxyHandler(OrderServiceApplication.class);
         } catch (ContainerInitializationException e) {
             e.printStackTrace();
             throw new RuntimeException("Could not initialize Spring Boot application", e);

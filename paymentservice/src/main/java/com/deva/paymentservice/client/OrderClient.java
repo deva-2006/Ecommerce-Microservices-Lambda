@@ -15,6 +15,6 @@ public interface OrderClient {
     @PutMapping("/orders/{orderId}/status")
     void updateOrderStatus(@PathVariable String orderId, @RequestParam String status);
 
-    @PostMapping("/orders/{orderId}/payment-success")
-    void handlePaymentSuccess(@PathVariable String orderId);
+//    @PostMapping("/orders/{orderId}/payment-success")
+//    void handlePaymentSuccess(@PathVariable String orderId);
 }

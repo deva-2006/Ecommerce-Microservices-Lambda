@@ -41,10 +41,11 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getPaymentsByUserId(userId));
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<PaymentResponseDTO> updateStatus(
-            @PathVariable String id,
+    @PutMapping("/{paymentId}/status")
+    public PaymentResponseDTO updatePaymentStatus(
+            @PathVariable String paymentId,
             @RequestParam String status) {
-        return ResponseEntity.ok(paymentService.updatePaymentStatus(id, status));
+
+        return paymentService.updatePaymentStatus(paymentId, status);
     }
 }

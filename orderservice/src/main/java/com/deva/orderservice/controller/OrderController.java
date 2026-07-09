@@ -49,11 +49,25 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{id}/payment-success")
-    public ResponseEntity<Void> handlePaymentSuccess(
-            @PathVariable String id,
-            @AuthUserId String userId) {
-        orderService.handlePostPaymentSuccess(id, userId);
-        return ResponseEntity.noContent().build();
-    }
+    /*
+     * Old synchronous flow (Feign):
+     * Payment Service -> Order Service -> handlePostPaymentSuccess()
+     *
+     * Replaced by event-driven architecture:
+     * Payment Service -> SNS -> SQS -> PaymentSuccessSqsHandler -> handlePostPaymentSuccess()
+     */
+
+// @PostMapping("/{id}/payment-success")
+// public ResponseEntity<Void> handlePaymentSuccess(
+//         @PathVariable String id,
+//         @AuthUserId String userId) {
+//     orderService.handlePostPaymentSuccess(id, userId);
+//     return ResponseEntity.noContent().build();
+// }//    @PostMapping("/{id}/payment-success")
+//    public ResponseEntity<Void> handlePaymentSuccess(
+//            @PathVariable String id,
+//            @AuthUserId String userId) {
+//        orderService.handlePostPaymentSuccess(id, userId);
+//        return ResponseEntity.noContent().build();
+//    }
 }
