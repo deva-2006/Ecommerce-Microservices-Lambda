@@ -1,8 +1,12 @@
-# 🛒 Serverless E-Commerce Microservices Backend
+# Serverless E-Commerce Microservices Backend
 
-A cloud-native serverless e-commerce backend built using **Spring Boot 3**, **Java 21**, **AWS Lambda**, **Amazon API Gateway**, **Amazon DynamoDB**, and **Amazon Cognito**.
+A cloud-native serverless e-commerce backend built using **Spring Boot 3.2.5**, **Java 21**, **AWS Lambda**, **Amazon API Gateway**, **Amazon DynamoDB**, **Amazon Cognito**, **Amazon SNS/SQS**, **Amazon SES**, and **Amazon S3**.
 
-The application consists of independent microservices deployed as AWS Lambda functions behind a shared HTTP API Gateway. Authentication is handled using **Amazon Cognito** and **API Gateway JWT Authorizers**, providing a secure, scalable, and production-style backend architecture.
+The application consists of independent microservices deployed as AWS Lambda functions behind a shared HTTP API Gateway. Authentication is handled using **Amazon Cognito** and **API Gateway JWT Authorizers**. Event-driven workflows use **Amazon SNS** and **Amazon SQS** for payment and order processing, with **Amazon SES** for email notifications.
+
+## Live Demo
+
+https://dhvfhexmyhpvv.cloudfront.net/
 
 ---
 
@@ -12,41 +16,52 @@ The application consists of independent microservices deployed as AWS Lambda fun
 
 ---
 
-# Tech Stack
+## Tech Stack
 
-## Backend
+### Backend
 
 - Java 21
-- Spring Boot 3
+- Spring Boot 3.2.5
 - Spring Data
 - OpenFeign
+- Lombok
 - REST APIs
 - Maven
 
-## Cloud
+### Cloud Services
 
 - AWS Lambda
 - Amazon API Gateway (HTTP API)
-- Amazon DynamoDB
+- Amazon DynamoDB (Enhanced Client)
 - Amazon Cognito
+- Amazon SNS
+- Amazon SQS
+- Amazon SES
+- Amazon S3 (Presigned URLs)
+- Amazon CloudFront
 - AWS IAM
-- Amazon CloudWatch
+
+### Deployment
+
+- aws-serverless-java-container (Spring Boot 3)
+- Maven Shade Plugin (Fat JAR packaging)
 
 ---
 
-# Microservices
+## Microservices
 
 | Service | Responsibility |
-|----------|---------------|
-| Product | Product Management |
+|---------|---------------|
+| Product | Product Management, S3 Image Upload |
 | Inventory | Stock Management |
 | Cart | Shopping Cart |
-| Order | Order Processing |
-| Payment | Payment Processing |
+| Order | Order Processing, Payment Event Publishing |
+| Payment | Payment Processing, SNS Event Publishing |
+| Notification | Email Notifications via SES |
 
 ---
 
-# Authentication
+## Authentication
 
 Authentication is implemented using **Amazon Cognito**.
 
@@ -56,6 +71,8 @@ Authentication is implemented using **Amazon Cognito**.
 - Cognito App Client
 - API Gateway JWT Authorizer
 - JWT Access Tokens
+- Custom `@AuthUserId` Annotation
+- Argument Resolvers
 
 ### Authentication Flow
 
@@ -77,23 +94,17 @@ Amazon API Gateway
       │ JWT Authorizer
       ▼
 AWS Lambda Microservices
+      │
+      │ Extracts user ID from JWT
+      ▼
+@AuthUserId Annotation
 ```
 
 ### User Identification
 
-The backend no longer trusts client-provided user IDs.
+The backend extracts the authenticated user's identity directly from the validated JWT using custom `@AuthUserId` annotation and `AuthUserIdArgumentResolver`.
 
-Previous request:
-
-```json
-{
-    "userId": "user001",
-    "productId": "P101",
-    "quantity": 2
-}
-```
-
-Current request:
+Request body (no userId required):
 
 ```json
 {
@@ -101,26 +112,48 @@ Current request:
     "quantity": 2
 }
 ```
-
-The authenticated user's identity is extracted directly from the validated JWT.
 
 ---
 
-# Cloud Deployment
+## Event-Driven Architecture
+
+### SNS/SQS Payment Events
+
+```
+Payment Service (SUCCESS)
+         │
+         ▼
+Amazon SNS (payment-events topic)
+         │
+         ├──► SQS ──► Order Service (updates order status)
+         │
+         └──► SQS ──► Notification Lambda (sends SES email)
+```
+
+### Services
+
+- **Payment Service**: Publishes payment success events to SNS
+- **Order Service**: Consumes payment events via SQS Lambda trigger
+- **Notification Lambda**: Consumes payment events, sends confirmation emails via SES
+
+---
+
+## Cloud Deployment
 
 Each microservice is deployed independently as an AWS Lambda function.
 
-| Lambda Function |
-|-----------------|
-| product-service-lambda |
-| inventory-service-lambda |
-| cart-service-lambda |
-| order-service-lambda |
-| payment-service-lambda |
+| Lambda Function | Type |
+|-----------------|------|
+| product-service-lambda | HTTP Lambda (Spring Boot) |
+| inventory-service-lambda | HTTP Lambda (Spring Boot) |
+| cart-service-lambda | HTTP Lambda (Spring Boot) |
+| order-service-lambda | HTTP Lambda (Spring Boot) |
+| payment-service-lambda | HTTP Lambda (Spring Boot) |
+| notification-consumer-lambda | SQS Lambda (SES Email) |
 
 ---
 
-# API Gateway
+## API Gateway
 
 A shared Amazon HTTP API Gateway acts as the entry point.
 
@@ -141,17 +174,19 @@ Protected endpoints are secured using API Gateway JWT Authorizers backed by Amaz
 
 ---
 
-# DynamoDB Tables
+## DynamoDB Tables
 
-- Products
-- Inventory
-- Cart
-- Orders
-- Payments
+| Table | Partition Key | Service |
+|-------|--------------|---------|
+| Products | productId | product-service |
+| Inventory | productId | inventory-service |
+| Cart | userId (PK), productId (SK) | cart-service |
+| Orders | orderId | order-service |
+| Payments | paymentId | payment-service |
 
 ---
 
-# Service Communication
+## Service Communication
 
 The microservices communicate internally using OpenFeign through the shared API Gateway.
 
@@ -170,29 +205,35 @@ Payment
  └──► Order
 ```
 
-Protected service-to-service communication forwards the authenticated user's JWT to downstream services.
+Protected service-to-service communication forwards the authenticated user's JWT to downstream services using `FeignClientConfig` request interceptors.
 
 ---
 
-# Features
+## Features
 
-- Serverless Architecture
+- Serverless Architecture (AWS Lambda)
 - RESTful APIs
 - Independent Microservices
-- Amazon DynamoDB Integration
+- Amazon DynamoDB Integration (Enhanced Client)
 - Amazon Cognito Authentication
 - JWT Authorization
 - API Gateway JWT Authorizers
+- Custom @AuthUserId Annotation
+- Argument Resolvers for User Extraction
 - OpenFeign Inter-Service Communication
 - JWT Propagation Between Services
+- Event-Driven Architecture (SNS/SQS)
+- Email Notifications (SES)
+- S3 Presigned URLs for Image Uploads
+- CloudFront CDN Distribution
 - API Gateway Routing
 - Lambda-based Deployment
-- CloudWatch Logging
-- IAM-based Permissions
+- Maven Shade Plugin (Fat JAR Packaging)
+- aws-serverless-java-container (Spring Boot 3)
 
 ---
 
-# Project Structure
+## Project Structure
 
 ```
 product-service/
@@ -200,28 +241,33 @@ inventory-service/
 cart-service/
 order-service/
 payment-service/
+notification-consumer-lambda/
 ```
 
-Each service contains:
+Each Spring Boot service contains:
 
 - Controllers
-- Services
+- Services (Interface + Implementation)
 - Repositories
-- DTOs
+- DTOs (Request/Response)
 - Entities
-- Lambda Handler
+- Lambda Handler (StreamLambdaHandler)
 - DynamoDB Configuration
 - Cognito JWT Integration
+- Custom Security Annotations
 
 ---
 
-# Deployment Flow
+## Deployment Flow
 
 ```
 Spring Boot Project
         │
         ▼
-Build JAR
+Maven Build (Shade Plugin)
+        │
+        ▼
+Fat JAR
         │
         ▼
 AWS Lambda
@@ -238,7 +284,7 @@ Client
 
 ---
 
-# Testing
+## Testing
 
 The APIs were tested using:
 
@@ -249,17 +295,7 @@ The APIs were tested using:
 
 ---
 
-# Future Enhancements
-
-- Amazon SNS & Amazon SQS Event-Driven Architecture
-- AWS Step Functions for Order Workflow
-- Frontend Deployment using Amazon S3 & CloudFront
-- CI/CD using GitHub Actions
-- Infrastructure as Code using AWS SAM or Terraform
-
----
-
-# Author
+## Author
 
 **Deva**
 
