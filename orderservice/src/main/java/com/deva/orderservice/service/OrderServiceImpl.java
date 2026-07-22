@@ -111,8 +111,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponseDTO> getOrdersByUserId(String userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
-        if (orders.isEmpty()) {
-            throw new ResourceNotFoundException("No orders found for userId: " + userId);
+        if (orders == null || orders.isEmpty()) {
+            return List.of();
+        }
+        return orders.stream().map(this::toResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderResponseDTO> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        if (orders == null || orders.isEmpty()) {
+            return List.of();
         }
         return orders.stream().map(this::toResponse).collect(Collectors.toList());
     }

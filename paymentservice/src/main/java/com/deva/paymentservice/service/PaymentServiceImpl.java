@@ -106,10 +106,30 @@ public class PaymentServiceImpl implements PaymentService {
     private void publishPaymentSuccessEvent(String orderId, String userId) {
         try {
             String email = fetchUserEmail(userId);
+            Payment payment = paymentRepository.findByOrderId(orderId).stream().findFirst().orElse(null);
 
-            String message = objectMapper.writeValueAsString(
-                    Map.of("orderId", orderId, "email", email)
-            );
+            Map<String, Object> payload = new java.util.HashMap<>();
+            payload.put("orderId", orderId);
+            payload.put("email", email);
+            if (payment != null) {
+                payload.put("amount", payment.getAmount());
+                payload.put("paymentMethod", payment.getPaymentMethod());
+                payload.put("paymentId", payment.getPaymentId());
+                payload.put("timestamp", payment.getCreatedAt());
+            }
+
+            try {
+                Map<String, Object> order = orderClient.getOrderById(orderId);
+                if (order != null) {
+                    payload.put("totalAmount", order.get("totalAmount"));
+                    payload.put("shippingAddress", order.get("shippingAddress"));
+                    payload.put("items", order.get("items"));
+                }
+            } catch (Exception e) {
+                // Order fetch failed — proceed with partial data
+            }
+
+            String message = objectMapper.writeValueAsString(payload);
 
             snsClient.publish(
                     PublishRequest.builder()

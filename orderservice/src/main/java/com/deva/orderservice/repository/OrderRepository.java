@@ -41,6 +41,13 @@ public class OrderRepository {
                 .collect(Collectors.toList());
     }
 
+    public List<Order> findAll() {
+        return orderTable.scan(ScanEnhancedRequest.builder().build())
+                .items()
+                .stream()
+                .collect(Collectors.toList());
+    }
+
     public void deleteById(String orderId) {
         Key key = Key.builder().partitionValue(orderId).build();
         orderTable.deleteItem(key);

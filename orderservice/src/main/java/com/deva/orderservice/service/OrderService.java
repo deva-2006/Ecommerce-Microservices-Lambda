@@ -9,6 +9,7 @@ public interface OrderService {
     OrderResponseDTO createOrder(String userId, OrderRequestDTO request);
     OrderResponseDTO getOrderById(String orderId);
     List<OrderResponseDTO> getOrdersByUserId(String userId);
+    List<OrderResponseDTO> getAllOrders();
     OrderResponseDTO updateOrderStatus(String orderId, String status);
     void deleteOrder(String orderId);
     void handlePostPaymentSuccess(String orderId, String userId);

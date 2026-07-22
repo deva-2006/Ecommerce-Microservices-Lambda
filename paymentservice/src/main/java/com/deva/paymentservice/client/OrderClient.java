@@ -1,10 +1,7 @@
 package com.deva.paymentservice.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
         name = "order-service",
@@ -12,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface OrderClient {
 
+    @GetMapping("/orders/{orderId}")
+    java.util.Map<String, Object> getOrderById(@PathVariable String orderId);
+
     @PutMapping("/orders/{orderId}/status")
     void updateOrderStatus(@PathVariable String orderId, @RequestParam String status);
-
-//    @PostMapping("/orders/{orderId}/payment-success")
-//    void handlePaymentSuccess(@PathVariable String orderId);
 }

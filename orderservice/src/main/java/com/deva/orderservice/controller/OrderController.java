@@ -36,6 +36,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByUserId(userId));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderResponseDTO> updateStatus(
             @PathVariable String id,
