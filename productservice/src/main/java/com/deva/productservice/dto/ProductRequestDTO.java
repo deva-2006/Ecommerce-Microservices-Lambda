@@ -20,4 +20,6 @@ public class ProductRequestDTO {
     @NotNull(message = "price is required")
     @Positive(message = "price must be positive")
     private Double price;
+
+    private String imageUrl;
 }

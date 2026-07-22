@@ -26,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
                 .description(request.getDescription())
                 .category(request.getCategory())
                 .price(request.getPrice())
+                .imageUrl(request.getImageUrl())
                 .build();
         productRepository.save(product);           // save first
         return toResponse(product);                // then return as response object
@@ -61,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(request.getDescription());
         product.setCategory(request.getCategory());
         product.setPrice(request.getPrice());
+        product.setImageUrl(request.getImageUrl());
         productRepository.save(product);           // save first
         return toResponse(product);                // then return
     }
@@ -80,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
                 .description(product.getDescription())
                 .category(product.getCategory())
                 .price(product.getPrice())
+                .imageUrl(product.getImageUrl())
                 .build();
     }
 }
