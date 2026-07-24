@@ -39,8 +39,18 @@ public class OrderServiceImpl implements OrderService {
         }
 
         for (CartItemDTO item : cartItems) {
-            productClient.getProductById(item.getProductId());
-            inventoryClient.validateStock(item.getProductId(), item.getQuantity());
+            try {
+                productClient.getProductById(item.getProductId());
+            } catch (feign.FeignException e) {
+                String pName = item.getProductName() != null ? item.getProductName() : "Product";
+                throw new IllegalArgumentException("'" + pName + "' is no longer available. Please remove it from your cart.");
+            }
+            try {
+                inventoryClient.validateStock(item.getProductId(), item.getQuantity());
+            } catch (feign.FeignException e) {
+                String pName = item.getProductName() != null ? item.getProductName() : "Product";
+                throw new IllegalArgumentException("'" + pName + "' is currently out of stock or sold out. Please remove it from your cart.");
+            }
         }
 
         List<OrderItem> orderItems = cartItems.stream()
@@ -141,6 +151,19 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Order not found: " + orderId));
         orderRepository.deleteById(orderId);
+    }
+
+    @Override
+    public boolean hasUserPurchasedProduct(String userId, String productId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        if (orders == null || orders.isEmpty()) {
+            return false;
+        }
+        return orders.stream()
+                .filter(o -> !"CANCELLED".equalsIgnoreCase(o.getStatus()))
+                .filter(o -> o.getItems() != null)
+                .flatMap(o -> o.getItems().stream())
+                .anyMatch(item -> productId.equals(item.getProductId()));
     }
 
     private OrderResponseDTO toResponse(Order order) {

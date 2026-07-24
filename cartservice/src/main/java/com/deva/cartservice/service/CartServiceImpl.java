@@ -27,10 +27,29 @@ public class CartServiceImpl implements CartService {
     public CartResponseDTO addToCart(String userId, CartRequestDTO request) {
 
         // Step 1: Verify product exists + fetch latest name and price
-        ProductResponseDTO product = productClient.getProductById(request.getProductId());
+        ProductResponseDTO product;
+        try {
+            product = productClient.getProductById(request.getProductId());
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Product with ID " + request.getProductId() + " does not exist or has been deleted.");
+        }
+
+        if (product == null) {
+            throw new ResourceNotFoundException("Product with ID " + request.getProductId() + " not found.");
+        }
 
         // Step 2: Validate stock available in Inventory Service
-        inventoryClient.validateStock(request.getProductId(), request.getQuantity());
+        try {
+            inventoryClient.validateStock(request.getProductId(), request.getQuantity());
+        } catch (feign.FeignException e) {
+            if (e.status() == 404) {
+                throw new ResourceNotFoundException("Inventory not found for productId: " + request.getProductId());
+            } else if (e.status() == 400 || e.status() == 409) {
+                throw new IllegalArgumentException("Insufficient stock available for product: " + request.getProductId());
+            } else {
+                throw new IllegalArgumentException("Stock validation failed for product: " + request.getProductId());
+            }
+        }
 
         // Step 3: Build cart item using trusted data from Product Service
         Cart cart = Cart.builder()
@@ -63,7 +82,17 @@ public class CartServiceImpl implements CartService {
                                 + ", productId: " + productId));
 
         // Validate new quantity against Inventory Service
-        inventoryClient.validateStock(productId, quantity);
+        try {
+            inventoryClient.validateStock(productId, quantity);
+        } catch (feign.FeignException e) {
+            if (e.status() == 404) {
+                throw new ResourceNotFoundException("Inventory not found for productId: " + productId);
+            } else if (e.status() == 400 || e.status() == 409) {
+                throw new IllegalArgumentException("Insufficient stock available for product: " + productId);
+            } else {
+                throw new IllegalArgumentException("Stock validation failed for product: " + productId);
+            }
+        }
 
         existing.setQuantity(quantity);
         existing.setTotalPrice(existing.getPrice() * quantity);

@@ -2,7 +2,9 @@ package com.deva.productservice.controller;
 
 import com.deva.productservice.dto.ProductRequestDTO;
 import com.deva.productservice.dto.ProductResponseDTO;
+import com.deva.productservice.dto.UploadUrlResponseDTO;
 import com.deva.productservice.service.ProductService;
+import com.deva.productservice.service.S3Service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final S3Service s3Service;
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(
@@ -33,6 +36,13 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable String id) {
         return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    @GetMapping("/upload-url")
+    public ResponseEntity<UploadUrlResponseDTO> getUploadUrl(
+            @RequestParam String fileName,
+            @RequestParam String contentType) {
+        return ResponseEntity.ok(s3Service.generatePresignedUploadUrl(fileName, contentType));
     }
 
     @PutMapping("/{id}")

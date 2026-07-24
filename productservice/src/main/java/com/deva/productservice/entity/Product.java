@@ -4,6 +4,8 @@ import lombok.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
+import java.util.List;
+
 @DynamoDbBean
 @Setter
 @Getter
@@ -18,6 +20,8 @@ public class Product {
     private String category;
     private Double price;
     private String imageUrl;
+    private List<String> imageUrls;
+    private List<String> highlights;
 
     @DynamoDbPartitionKey
     public String getProductId() { return productId; }

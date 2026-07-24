@@ -41,6 +41,14 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
+    @GetMapping("/verify-purchase")
+    public ResponseEntity<java.util.Map<String, Boolean>> verifyPurchase(
+            @AuthUserId String userId,
+            @RequestParam String productId) {
+        boolean purchased = orderService.hasUserPurchasedProduct(userId, productId);
+        return ResponseEntity.ok(java.util.Map.of("purchased", purchased));
+    }
+
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderResponseDTO> updateStatus(
             @PathVariable String id,

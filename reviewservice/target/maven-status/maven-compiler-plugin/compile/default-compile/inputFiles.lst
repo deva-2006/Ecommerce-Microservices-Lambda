@@ -1,0 +1,16 @@
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\repository\ReviewRepository.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\config\WebConfig.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\entity\Review.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\service\ReviewServiceImpl.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\ReviewServiceApplication.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\security\UnauthorizedException.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\security\AuthUserId.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\controller\ReviewController.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\dto\ReviewRequestDTO.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\security\AuthUserIdArgumentResolver.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\service\ReviewService.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\dto\ReviewSummaryDTO.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\config\DynamoDBConfig.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\client\OrderClient.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\dto\ReviewResponseDTO.java
+C:\Users\mksha\Desktop\deva-projects\deva-microservices lambda github\reviewservice\src\main\java\com\deva\reviewservice\StreamLambdaHandler.java

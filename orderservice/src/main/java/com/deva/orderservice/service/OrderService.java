@@ -13,4 +13,5 @@ public interface OrderService {
     OrderResponseDTO updateOrderStatus(String orderId, String status);
     void deleteOrder(String orderId);
     void handlePostPaymentSuccess(String orderId, String userId);
+    boolean hasUserPurchasedProduct(String userId, String productId);
 }

@@ -8,6 +8,7 @@ import com.deva.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -18,18 +19,33 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private List<String> resolveImageUrls(ProductRequestDTO request) {
+        List<String> imageUrls = request.getImageUrls();
+        if (imageUrls != null && !imageUrls.isEmpty()) {
+            return imageUrls;
+        }
+        String single = request.getImageUrl();
+        if (single != null && !single.isBlank()) {
+            return List.of(single);
+        }
+        return List.of();
+    }
+
     @Override
     public ProductResponseDTO createProduct(ProductRequestDTO request) {
+        List<String> imageUrls = resolveImageUrls(request);
         Product product = Product.builder()
                 .productId(UUID.randomUUID().toString())
                 .name(request.getName())
                 .description(request.getDescription())
                 .category(request.getCategory())
                 .price(request.getPrice())
-                .imageUrl(request.getImageUrl())
+                .highlights(request.getHighlights())
+                .imageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0))
+                .imageUrls(imageUrls)
                 .build();
-        productRepository.save(product);           // save first
-        return toResponse(product);                // then return as response object
+        productRepository.save(product);
+        return toResponse(product);
     }
 
     @Override
@@ -53,18 +69,22 @@ public class ProductServiceImpl implements ProductService {
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
+
     @Override
     public ProductResponseDTO updateProduct(String productId, ProductRequestDTO request) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Product not found: " + productId));
+        List<String> imageUrls = resolveImageUrls(request);
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setCategory(request.getCategory());
         product.setPrice(request.getPrice());
-        product.setImageUrl(request.getImageUrl());
-        productRepository.save(product);           // save first
-        return toResponse(product);                // then return
+        product.setHighlights(request.getHighlights());
+        product.setImageUrl(imageUrls.isEmpty() ? null : imageUrls.get(0));
+        product.setImageUrls(imageUrls);
+        productRepository.save(product);
+        return toResponse(product);
     }
 
     @Override
@@ -72,17 +92,33 @@ public class ProductServiceImpl implements ProductService {
         productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Product not found: " + productId));
-        productRepository.delete(productId);       // delete() not deleteById()
+        productRepository.delete(productId);
+    }
+
+    private List<String> buildResponseImageUrls(Product product) {
+        List<String> imageUrls = product.getImageUrls();
+        if (imageUrls != null && !imageUrls.isEmpty()) {
+            return imageUrls;
+        }
+        String single = product.getImageUrl();
+        if (single != null && !single.isBlank()) {
+            return List.of(single);
+        }
+        return new ArrayList<>();
     }
 
     private ProductResponseDTO toResponse(Product product) {
+        List<String> imageUrls = buildResponseImageUrls(product);
+        String imageUrl = imageUrls.isEmpty() ? null : imageUrls.get(0);
         return ProductResponseDTO.builder()
                 .productId(product.getProductId())
                 .name(product.getName())
                 .description(product.getDescription())
                 .category(product.getCategory())
                 .price(product.getPrice())
-                .imageUrl(product.getImageUrl())
+                .highlights(product.getHighlights())
+                .imageUrl(imageUrl)
+                .imageUrls(imageUrls)
                 .build();
     }
 }
