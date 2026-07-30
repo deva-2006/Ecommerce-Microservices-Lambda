@@ -26,6 +26,13 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Run Snyk Security Scan
+        uses: snyk/actions/maven@master
+        env:
+          SNYK_TOKEN: ${{ secrets.devaSecretSnyk }}
+        with:
+          args: --file=orderservice/pom.xml --severity-threshold=high
+
       - name: Build with Maven
         run: |
           cd orderservice
