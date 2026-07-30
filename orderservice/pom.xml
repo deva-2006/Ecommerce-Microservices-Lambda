@@ -18,6 +18,10 @@
 
 	<properties>
 		<java.version>21</java.version>
+		<logback.version>1.5.16</logback.version>
+		<jackson.version>2.18.8</jackson.version>
+		<netty.version>4.1.136.Final</netty.version>
+		<tomcat.version>10.1.42</tomcat.version>
 		<aws.sdk.version>2.25.60</aws.sdk.version>
 		<spring-cloud.version>2023.0.5</spring-cloud.version>
 	</properties>
@@ -31,7 +35,18 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-		</dependencies>
+			<!-- Fix vulnerabilities in transitive commons-fileupload dependencies -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-fileupload2-core</artifactId>
+			<version>2.0.0-M4</version>
+		</dependency>
+	</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
@@ -99,6 +114,17 @@
 			<version>1.1.0</version>
 		</dependency>
 
+		<!-- Fix vulnerabilities in transitive commons-fileupload dependencies -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-fileupload2-core</artifactId>
+			<version>2.0.0-M4</version>
+		</dependency>
 	</dependencies>
 
 	<build>
