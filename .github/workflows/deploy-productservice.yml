@@ -34,6 +34,9 @@ jobs:
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
 
+      - name: Make Maven Wrapper Executable
+        run: chmod +x productservice/mvnw
+
       - name: Run Snyk Security Scan
         run: |
           snyk test --file=productservice/pom.xml --severity-threshold=high -d
