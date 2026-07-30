@@ -11,6 +11,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 @AllArgsConstructor
 public class Inventory {
 
+
     private String productId;
     private Integer quantity;
     private String updatedAt;

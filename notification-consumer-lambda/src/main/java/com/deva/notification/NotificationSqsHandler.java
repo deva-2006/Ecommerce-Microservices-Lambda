@@ -21,6 +21,7 @@ import java.util.Map;
 
 public class NotificationSqsHandler implements RequestHandler<SQSEvent, Void> {
 
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final SesClient sesClient = SesClient.builder().region(Region.US_EAST_1).build();
     private static final DynamoDbClient dynamoDb = DynamoDbClient.builder().region(Region.US_EAST_1).build();

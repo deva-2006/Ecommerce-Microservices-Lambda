@@ -45,7 +45,6 @@ public class CartRepository {
                 .build();
         return Optional.ofNullable(cartTable.getItem(key));
     }
-
     public void deleteByUserIdAndProductId(String userId, String productId) {
         Key key = Key.builder()
                 .partitionValue(userId)

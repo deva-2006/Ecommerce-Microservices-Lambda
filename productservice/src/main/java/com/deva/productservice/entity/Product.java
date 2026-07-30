@@ -23,6 +23,7 @@ public class Product {
     private List<String> imageUrls;
     private List<String> highlights;
 
+
     @DynamoDbPartitionKey
     public String getProductId() { return productId; }
 
