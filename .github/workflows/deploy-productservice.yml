@@ -26,19 +26,19 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Build with Maven
+        run: |
+          cd productservice
+          mvn clean package -DskipTests
+
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
 
       - name: Run Snyk Security Scan
         run: |
-          snyk test --file=productservice/pom.xml --severity-threshold=high
+          snyk test --file=productservice/pom.xml --severity-threshold=high -d
         env:
           SNYK_TOKEN: ${{ secrets.devaSecretSnyk }}
-
-      - name: Build with Maven
-        run: |
-          cd productservice
-          mvn clean package -DskipTests
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
