@@ -26,12 +26,14 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+
       - name: Run Snyk Security Scan
-        uses: snyk/actions/maven@master
+        run: |
+          snyk test --file=notification-consumer-lambda/pom.xml --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.devaSecretSnyk }}
-        with:
-          args: --file=notification-consumer-lambda/pom.xml --severity-threshold=high
 
       - name: Build with Maven
         run: |
