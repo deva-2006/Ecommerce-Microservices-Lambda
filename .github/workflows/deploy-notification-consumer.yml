@@ -34,9 +34,6 @@ jobs:
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
 
-      - name: Make Maven Wrapper Executable
-        run: chmod +x notification-consumer-lambda/mvnw
-
       - name: Run Snyk Security Scan (JSON Output)
         run: |
           snyk test --file=notification-consumer-lambda/pom.xml --severity-threshold=high --json > snyk-report.json
