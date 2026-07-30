@@ -21,7 +21,7 @@
 		<logback.version>1.5.38</logback.version>
 		<jackson.version>2.18.9</jackson.version>
 		<netty.version>4.1.136.Final</netty.version>
-		<tomcat.version>10.1.55</tomcat.version>
+		<tomcat.version>10.1.56</tomcat.version>
 		<spring-framework.version>6.2.19</spring-framework.version>
 		<spring-security.version>6.3.8</spring-security.version>
 		<aws.sdk.version>2.25.60</aws.sdk.version>
