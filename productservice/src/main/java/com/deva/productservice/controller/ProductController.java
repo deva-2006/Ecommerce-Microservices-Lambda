@@ -45,6 +45,7 @@ public class ProductController {
         return ResponseEntity.ok(s3Service.generatePresignedUploadUrl(fileName, contentType));
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable String id,
