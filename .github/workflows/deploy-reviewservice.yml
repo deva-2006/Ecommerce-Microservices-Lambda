@@ -37,11 +37,26 @@ jobs:
       - name: Make Maven Wrapper Executable
         run: chmod +x reviewservice/mvnw
 
-      - name: Run Snyk Security Scan
+      - name: Run Snyk Security Scan (JSON Output)
         run: |
-          snyk test --file=reviewservice/pom.xml --severity-threshold=high -d
+          snyk test --file=reviewservice/pom.xml --severity-threshold=high --json > snyk-report.json
         env:
           SNYK_TOKEN: ${{ secrets.devaSecretSnyk }}
+
+      - name: Convert JSON to HTML Report
+        if: always()
+        run: |
+          npm install -g snyk-to-html
+          snyk-to-html -i snyk-report.json -o snyk-report.html
+
+      - name: Upload Snyk Security Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: snyk-reviewservice-report
+          path: |
+            snyk-report.json
+            snyk-report.html
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4

@@ -449,6 +449,7 @@ public class NotificationSqsHandler implements RequestHandler<SQSEvent, Void> {
         sesClient.sendEmail(request);
     }
 }
-// Snyk trigger 3
+// Snyk trigger 4
+
 
 
