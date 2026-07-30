@@ -37,8 +37,13 @@ jobs:
           role-to-assume: arn:aws:iam::943755888207:role/GitHubActionsWorkflowRole
           aws-region: us-east-1
 
+      - name: Upload to S3
+        run: |
+          aws s3 cp notification-consumer-lambda/target/notification-consumer-lambda-0.0.1-SNAPSHOT.jar s3://deva-lambda-artifacts/notification-consumer-lambda.jar
+
       - name: Deploy to AWS Lambda
         run: |
           aws lambda update-function-code \
             --function-name notification-consumer-lambda \
-            --zip-file fileb://notification-consumer-lambda/target/notification-consumer-lambda-0.0.1-SNAPSHOT.jar
+            --s3-bucket deva-lambda-artifacts \
+            --s3-key notification-consumer-lambda.jar

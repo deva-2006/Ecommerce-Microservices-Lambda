@@ -37,8 +37,13 @@ jobs:
           role-to-assume: arn:aws:iam::943755888207:role/GitHubActionsWorkflowRole
           aws-region: us-east-1
 
+      - name: Upload to S3
+        run: |
+          aws s3 cp productservice/target/product-service-0.0.1-SNAPSHOT.jar s3://deva-lambda-artifacts/product-service.jar
+
       - name: Deploy to AWS Lambda
         run: |
           aws lambda update-function-code \
             --function-name product-service \
-            --zip-file fileb://productservice/target/product-service-0.0.1-SNAPSHOT.jar
+            --s3-bucket deva-lambda-artifacts \
+            --s3-key product-service.jar

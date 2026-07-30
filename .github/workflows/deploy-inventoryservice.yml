@@ -37,8 +37,13 @@ jobs:
           role-to-assume: arn:aws:iam::943755888207:role/GitHubActionsWorkflowRole
           aws-region: us-east-1
 
+      - name: Upload to S3
+        run: |
+          aws s3 cp inventoryservice/target/inventory-service-0.0.1-SNAPSHOT.jar s3://deva-lambda-artifacts/inventory-service.jar
+
       - name: Deploy to AWS Lambda
         run: |
           aws lambda update-function-code \
             --function-name inventory-service \
-            --zip-file fileb://inventoryservice/target/inventory-service-0.0.1-SNAPSHOT.jar
+            --s3-bucket deva-lambda-artifacts \
+            --s3-key inventory-service.jar
