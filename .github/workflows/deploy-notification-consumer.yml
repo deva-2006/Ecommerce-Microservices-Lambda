@@ -97,7 +97,8 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 cp notification-consumer-lambda/target/notification-consumer-lambda-0.0.1-SNAPSHOT.jar s3://deva-lambda-artifacts/notification-consumer-lambda.jar
+          aws s3 cp notification-consumer-lambda/target/notification-consumer-lambda-1.0.0.jar s3://deva-lambda-artifacts/notification-consumer-lambda.jar
+
 
       - name: Deploy to AWS Lambda
         run: |
