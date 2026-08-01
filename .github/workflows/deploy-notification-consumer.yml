@@ -46,6 +46,40 @@ jobs:
           npm install -g snyk-to-html
           snyk-to-html -i snyk-report.json -o snyk-report.html
 
+      - name: Print Security Summary
+        if: always()
+        run: |
+          if [ -f snyk-report.json ]; then
+            echo "### Snyk Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              try {
+                const fs = require('fs');
+                const report = JSON.parse(fs.readFileSync('snyk-report.json', 'utf8'));
+                const vulns = Array.isArray(report) ? report.flatMap(r => r.vulnerabilities || []) : (report.vulnerabilities || []);
+                const count = vulns.length;
+                console.log('==================================================');
+                console.log('TOTAL VULNERABILITIES FOUND:', count);
+                console.log('==================================================');
+                fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n* **Total High/Critical Vulnerabilities:** ' + count + '\n');
+                if (count > 0) {
+                  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n| Severity | Package | Title | Remediation |\n| --- | --- | --- | --- |\n');
+                  vulns.forEach(v => {
+                    const cleanTitle = (v.title || '').replace(/|/g, '\|');
+                    const cleanRemediation = (v.remediation || 'Upgrade dependency').replace(/\n/g, ' ').replace(/|/g, '\|');
+                    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '| ' + v.severity + ' | ' + v.packageName + ' | ' + cleanTitle + ' | ' + cleanRemediation + ' |\n');
+                  });
+                } else {
+                  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n:white_check_mark: No high-severity vulnerabilities found!\n');
+                }
+              } catch (e) {
+                console.error('Failed to parse Snyk report:', e);
+              }
+            "
+          else
+            echo "Snyk report not found."
+          fi
+
+
       - name: Upload Snyk Security Report
         uses: actions/upload-artifact@v4
         if: always()
