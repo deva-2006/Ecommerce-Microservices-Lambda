@@ -31,6 +31,11 @@ jobs:
           cd inventoryservice
           mvn clean package -DskipTests
 
+      - name: Unit Tests
+        run: |
+          cd inventoryservice
+          mvn test
+
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
 

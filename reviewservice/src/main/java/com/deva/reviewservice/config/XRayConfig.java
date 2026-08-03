@@ -1,7 +1,7 @@
 package com.deva.reviewservice.config;
 
 import com.amazonaws.xray.AWSXRay;
-import com.amazonaws.xray.entities.Segment;
+import com.amazonaws.xray.entities.Subsegment;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,23 +24,31 @@ public class XRayConfig implements Filter {
 
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        Segment segment = AWSXRay.beginSegment("review-service");
+        Subsegment subsegment = AWSXRay.beginSubsegment("review-service");
         try {
-            Map<String, Object> reqData = new HashMap<>();
-            reqData.put("url", httpRequest.getRequestURI());
-            reqData.put("method", httpRequest.getMethod());
-            segment.putHttp("request", reqData);
+            if (subsegment != null) {
+                Map<String, Object> reqData = new HashMap<>();
+                reqData.put("url", httpRequest.getRequestURI());
+                reqData.put("method", httpRequest.getMethod());
+                subsegment.putHttp("request", reqData);
+            }
 
             chain.doFilter(request, response);
 
-            Map<String, Object> resData = new HashMap<>();
-            resData.put("status", httpResponse.getStatus());
-            segment.putHttp("response", resData);
+            if (subsegment != null) {
+                Map<String, Object> resData = new HashMap<>();
+                resData.put("status", httpResponse.getStatus());
+                subsegment.putHttp("response", resData);
+            }
         } catch (Exception e) {
-            segment.addException(e);
+            if (subsegment != null) {
+                subsegment.addException(e);
+            }
             throw e;
         } finally {
-            AWSXRay.endSegment();
+            if (subsegment != null) {
+                AWSXRay.endSubsegment();
+            }
         }
     }
 }

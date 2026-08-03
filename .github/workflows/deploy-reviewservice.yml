@@ -31,6 +31,11 @@ jobs:
           cd reviewservice
           mvn clean package -DskipTests
 
+      - name: Unit Tests
+        run: |
+          cd reviewservice
+          mvn test
+
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
 
