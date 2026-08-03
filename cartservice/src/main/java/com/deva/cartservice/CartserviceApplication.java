@@ -9,3 +9,4 @@ public class CartserviceApplication {
 		SpringApplication.run(CartserviceApplication.class, args);
 	}
 }
+// AWS X-Ray Tracing enabled

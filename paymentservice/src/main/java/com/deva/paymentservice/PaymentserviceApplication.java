@@ -10,3 +10,4 @@ public class PaymentserviceApplication {
 		SpringApplication.run(PaymentserviceApplication.class, args);
 	}
 }
+// AWS X-Ray Tracing enabled

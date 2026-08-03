@@ -12,3 +12,5 @@ public class ReviewServiceApplication {
         SpringApplication.run(ReviewServiceApplication.class, args);
     }
 }
+
+// AWS X-Ray Tracing enabled

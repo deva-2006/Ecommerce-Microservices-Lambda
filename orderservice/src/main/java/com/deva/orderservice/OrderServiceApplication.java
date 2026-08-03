@@ -9,3 +9,4 @@ public class OrderServiceApplication {
 		SpringApplication.run(OrderServiceApplication.class, args);
 	}
 }
+// AWS X-Ray Tracing enabled

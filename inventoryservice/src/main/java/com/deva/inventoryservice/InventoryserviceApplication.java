@@ -9,3 +9,4 @@ public class InventoryserviceApplication {
 		SpringApplication.run(InventoryserviceApplication.class, args);
 	}
 }
+// AWS X-Ray Tracing enabled
