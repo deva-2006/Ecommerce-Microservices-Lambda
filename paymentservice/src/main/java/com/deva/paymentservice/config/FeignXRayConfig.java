@@ -14,7 +14,7 @@ public class FeignXRayConfig {
     public RequestInterceptor feignTracingInterceptor() {
         return (RequestTemplate template) -> {
             AWSXRay.getCurrentSegmentOptional().ifPresent(segment -> {
-                TraceHeader traceHeader = new TraceHeader(segment.getTraceId(), segment.getId(), null);
+                TraceHeader traceHeader = TraceHeader.fromEntity(segment);
                 template.header("X-Amzn-Trace-Id", traceHeader.toString());
             });
         };
