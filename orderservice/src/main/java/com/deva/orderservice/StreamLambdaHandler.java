@@ -6,13 +6,16 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.spring.SpringBootLambdaContainerHandler;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 public class StreamLambdaHandler implements RequestStreamHandler {
     private static SpringBootLambdaContainerHandler<HttpApiV2ProxyRequest, AwsProxyResponse> handler;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
         try {
@@ -25,6 +28,11 @@ public class StreamLambdaHandler implements RequestStreamHandler {
 
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-        handler.proxyStream(input, output, context);
+        HttpApiV2ProxyRequest request = objectMapper.readValue(input, HttpApiV2ProxyRequest.class);
+        if (request.getHeaders() == null) {
+            request.setHeaders(new HashMap<>());
+        }
+        AwsProxyResponse response = handler.proxy(request, context);
+        objectMapper.writeValue(output, response);
     }
 }
