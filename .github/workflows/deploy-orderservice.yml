@@ -115,9 +115,3 @@ jobs:
             --function-name order-payment-consumer-lambda \
             --s3-bucket deva-lambda-artifacts \
             --s3-key order-service.jar
-
-      - name: Enable AWS X-Ray Active Tracing
-        run: |
-          aws lambda update-function-configuration \
-            --function-name order-service \
-            --tracing-config Mode=Active

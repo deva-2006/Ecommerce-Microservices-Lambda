@@ -105,9 +105,3 @@ jobs:
             --function-name review-service \
             --s3-bucket deva-lambda-artifacts \
             --s3-key review-service.jar
-
-      - name: Enable AWS X-Ray Active Tracing
-        run: |
-          aws lambda update-function-configuration \
-            --function-name review-service \
-            --tracing-config Mode=Active

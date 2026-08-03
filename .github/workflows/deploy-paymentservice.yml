@@ -108,9 +108,3 @@ jobs:
             --function-name payment-service \
             --s3-bucket deva-lambda-artifacts \
             --s3-key payment-service.jar
-
-      - name: Enable AWS X-Ray Active Tracing
-        run: |
-          aws lambda update-function-configuration \
-            --function-name payment-service \
-            --tracing-config Mode=Active
