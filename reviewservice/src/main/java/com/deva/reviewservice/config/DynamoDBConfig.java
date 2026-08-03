@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import com.amazonaws.xray.interceptors.TracingInterceptor;
+import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
+
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 
 @Configuration
@@ -17,6 +20,7 @@ public class DynamoDBConfig {
     public DynamoDbClient dynamoDbClient() {
         return DynamoDbClient.builder()
                 .region(Region.of(region))
+                .overrideConfiguration(ClientOverrideConfiguration.builder().addExecutionInterceptor(new TracingInterceptor()).build())
                 .build();
     }
 

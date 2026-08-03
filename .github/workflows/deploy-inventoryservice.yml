@@ -108,3 +108,9 @@ jobs:
             --function-name inventory-service \
             --s3-bucket deva-lambda-artifacts \
             --s3-key inventory-service.jar
+
+      - name: Enable AWS X-Ray Active Tracing
+        run: |
+          aws lambda update-function-configuration \
+            --function-name inventory-service \
+            --tracing-config Mode=Active

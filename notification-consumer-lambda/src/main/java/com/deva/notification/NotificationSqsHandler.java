@@ -11,6 +11,9 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 import software.amazon.awssdk.services.ses.SesClient;
 import software.amazon.awssdk.services.ses.model.*;
 
+import com.amazonaws.xray.interceptors.TracingInterceptor;
+import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -23,8 +26,15 @@ public class NotificationSqsHandler implements RequestHandler<SQSEvent, Void> {
 
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final SesClient sesClient = SesClient.builder().region(Region.US_EAST_1).build();
-    private static final DynamoDbClient dynamoDb = DynamoDbClient.builder().region(Region.US_EAST_1).build();
+    private static final SesClient sesClient = SesClient.builder()
+            .region(Region.US_EAST_1)
+            .overrideConfiguration(ClientOverrideConfiguration.builder().addExecutionInterceptor(new TracingInterceptor()).build())
+            .build();
+    private static final DynamoDbClient dynamoDb = DynamoDbClient.builder()
+            .region(Region.US_EAST_1)
+            .overrideConfiguration(ClientOverrideConfiguration.builder().addExecutionInterceptor(new TracingInterceptor()).build())
+            .build();
+
     private static final String FROM_EMAIL = System.getenv("FROM_EMAIL");
     private static final String ORDERS_TABLE = "Orders";
     private static final String STORE_NAME = "ShopVibe";

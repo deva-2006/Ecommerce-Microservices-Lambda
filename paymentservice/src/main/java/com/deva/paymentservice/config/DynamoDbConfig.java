@@ -8,6 +8,9 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import com.amazonaws.xray.interceptors.TracingInterceptor;
+import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
+
 
 import java.net.URI;
 
