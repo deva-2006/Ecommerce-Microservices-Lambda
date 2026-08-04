@@ -136,6 +136,17 @@ class CartServiceImplTest {
     }
 
     @Test
+    void addToCart_inventoryConflict_throwsIllegalArgument() {
+        when(productClient.getProductById("prod-123")).thenReturn(productDTO);
+        FeignException feignException = mockFeignException(409);
+        doThrow(feignException).when(inventoryClient).validateStock("prod-123", 2);
+
+        assertThatThrownBy(() -> cartService.addToCart("user-1", requestDTO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Insufficient stock available");
+    }
+
+    @Test
     void getCartByUserId_success() {
         when(cartRepository.findByUserId("user-1")).thenReturn(List.of(cart));
 
@@ -172,6 +183,50 @@ class CartServiceImplTest {
 
         assertThatThrownBy(() -> cartService.updateCartItem("user-1", "prod-123", 5))
                 .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    void updateCartItem_inventoryNotFound_throwsResourceNotFound() {
+        when(cartRepository.findByUserIdAndProductId("user-1", "prod-123")).thenReturn(Optional.of(cart));
+        FeignException feignException = mockFeignException(404);
+        doThrow(feignException).when(inventoryClient).validateStock("prod-123", 5);
+
+        assertThatThrownBy(() -> cartService.updateCartItem("user-1", "prod-123", 5))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Inventory not found");
+    }
+
+    @Test
+    void updateCartItem_inventoryInsufficientStock_throwsIllegalArgument() {
+        when(cartRepository.findByUserIdAndProductId("user-1", "prod-123")).thenReturn(Optional.of(cart));
+        FeignException feignException = mockFeignException(400);
+        doThrow(feignException).when(inventoryClient).validateStock("prod-123", 5);
+
+        assertThatThrownBy(() -> cartService.updateCartItem("user-1", "prod-123", 5))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Insufficient stock available");
+    }
+
+    @Test
+    void updateCartItem_inventoryConflict_throwsIllegalArgument() {
+        when(cartRepository.findByUserIdAndProductId("user-1", "prod-123")).thenReturn(Optional.of(cart));
+        FeignException feignException = mockFeignException(409);
+        doThrow(feignException).when(inventoryClient).validateStock("prod-123", 5);
+
+        assertThatThrownBy(() -> cartService.updateCartItem("user-1", "prod-123", 5))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Insufficient stock available");
+    }
+
+    @Test
+    void updateCartItem_inventoryGeneralError_throwsIllegalArgument() {
+        when(cartRepository.findByUserIdAndProductId("user-1", "prod-123")).thenReturn(Optional.of(cart));
+        FeignException feignException = mockFeignException(500);
+        doThrow(feignException).when(inventoryClient).validateStock("prod-123", 5);
+
+        assertThatThrownBy(() -> cartService.updateCartItem("user-1", "prod-123", 5))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Stock validation failed");
     }
 
     @Test

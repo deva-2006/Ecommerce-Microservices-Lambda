@@ -249,4 +249,55 @@ class ProductServiceImplTest {
         assertThat(response.getImageUrls()).isEmpty();
         assertThat(response.getImageUrl()).isNull();
     }
+
+    @Test
+    void createProduct_withBlankSingleImageUrl_shouldReturnEmptyList() {
+        ProductRequestDTO request = buildRequest();
+        request.setImageUrls(null);
+        request.setImageUrl("   ");
+
+        ProductResponseDTO response = productService.createProduct(request);
+
+        assertThat(response.getImageUrls()).isEmpty();
+        assertThat(response.getImageUrl()).isNull();
+    }
+
+    @Test
+    void updateProduct_withNoImages_shouldSetImageUrlNull() {
+        Product existing = buildProduct("prod-1");
+        when(productRepository.findById("prod-1")).thenReturn(Optional.of(existing));
+
+        ProductRequestDTO request = buildRequest();
+        request.setImageUrls(null);
+        request.setImageUrl(null);
+
+        ProductResponseDTO response = productService.updateProduct("prod-1", request);
+
+        assertThat(response.getImageUrls()).isEmpty();
+        assertThat(response.getImageUrl()).isNull();
+
+        ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
+        verify(productRepository).save(captor.capture());
+        assertThat(captor.getValue().getImageUrl()).isNull();
+        assertThat(captor.getValue().getImageUrls()).isEmpty();
+    }
+
+    @Test
+    void toResponse_withBlankSingleImageUrl_shouldReturnEmptyLists() {
+        Product product = Product.builder()
+                .productId("p1")
+                .name("Test")
+                .description("Desc")
+                .category("Cat")
+                .price(10.0)
+                .imageUrl("   ")
+                .imageUrls(null)
+                .build();
+        when(productRepository.findById("p1")).thenReturn(Optional.of(product));
+
+        ProductResponseDTO response = productService.getProductById("p1");
+
+        assertThat(response.getImageUrls()).isEmpty();
+        assertThat(response.getImageUrl()).isNull();
+    }
 }

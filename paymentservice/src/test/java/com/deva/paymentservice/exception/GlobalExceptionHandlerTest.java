@@ -1,5 +1,6 @@
-package com.deva.inventoryservice.exception;
+package com.deva.paymentservice.exception;
 
+import com.deva.paymentservice.security.UnauthorizedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -25,37 +26,41 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void handleNotFound() {
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleNotFound(new ResourceNotFoundException("Item missing"));
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-        assertThat(response.getBody().get("error")).isEqualTo("Item missing");
+    void handleUnauthorized() {
+        ResponseEntity<Map<String, String>> response = exceptionHandler.handleUnauthorized(new UnauthorizedException("Access denied"));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(response.getBody().get("error")).isEqualTo("Access denied");
     }
 
     @Test
-    void handleIllegalState() {
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleIllegalState(new IllegalStateException("Stock low"));
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
-        assertThat(response.getBody().get("error")).isEqualTo("Stock low");
+    void handleNotFound() {
+        ResponseEntity<Map<String, String>> response = exceptionHandler.handleNotFound(new ResourceNotFoundException("Not found"));
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getBody().get("error")).isEqualTo("Not found");
     }
 
     @Test
     void handleValidation() {
         MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
         BindingResult bindingResult = mock(BindingResult.class);
-        FieldError fieldError = new FieldError("inventory", "quantity", "quantity cannot be negative");
+        FieldError fieldError = new FieldError("payment", "amount", "amount must be positive");
+
         when(ex.getBindingResult()).thenReturn(bindingResult);
         when(bindingResult.getFieldErrors()).thenReturn(List.of(fieldError));
 
         ResponseEntity<Map<String, String>> response = exceptionHandler.handleValidation(ex);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody()).containsEntry("quantity", "quantity cannot be negative");
+        assertThat(response.getBody().get("amount")).isEqualTo("amount must be positive");
     }
 
     @Test
     void handleGeneral() {
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleGeneral(new Exception("System failure"));
+        ResponseEntity<Map<String, String>> response = exceptionHandler.handleGeneral(new Exception("Unknown failure"));
+
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-        assertThat(response.getBody().get("error")).contains("System failure");
+        assertThat(response.getBody().get("error")).contains("Unknown failure");
     }
 }

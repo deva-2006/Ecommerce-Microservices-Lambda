@@ -1,13 +1,24 @@
 package com.deva.productservice.service;
 
+import com.deva.productservice.dto.UploadUrlResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
+
+import java.net.URL;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class S3ServiceTest {
@@ -88,5 +99,28 @@ class S3ServiceTest {
         String result = (String) method.invoke(s3Service, "products/key.jpg");
 
         assertThat(result).startsWith("https://");
+    }
+
+    @Test
+    void generatePresignedUploadUrl_shouldReturnUploadAndPublicUrls() throws Exception {
+        S3Presigner presigner = mock(S3Presigner.class);
+        S3Presigner.Builder builder = mock(S3Presigner.Builder.class);
+        PresignedPutObjectRequest presignedRequest = mock(PresignedPutObjectRequest.class);
+        URL uploadUrl = mock(URL.class);
+
+        try (MockedStatic<S3Presigner> staticMock = mockStatic(S3Presigner.class)) {
+            staticMock.when(S3Presigner::builder).thenReturn(builder);
+            when(builder.build()).thenReturn(presigner);
+            when(presigner.presignPutObject(any(Consumer.class))).thenReturn(presignedRequest);
+            when(presignedRequest.url()).thenReturn(uploadUrl);
+            when(uploadUrl.toString()).thenReturn("https://s3.upload.example/put-object");
+
+            UploadUrlResponseDTO dto = s3Service.generatePresignedUploadUrl("photo.jpg", "image/jpeg");
+
+            assertThat(dto).isNotNull();
+            assertThat(dto.getUploadUrl()).isEqualTo("https://s3.upload.example/put-object");
+            assertThat(dto.getPublicUrl()).startsWith("https://test-bucket.s3.amazonaws.com/products/");
+            assertThat(dto.getPublicUrl()).endsWith("-photo.jpg");
+        }
     }
 }
