@@ -85,7 +85,7 @@ jobs:
       - name: SonarQube Scan
         run: |
           cd paymentservice
-          mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
