@@ -79,7 +79,12 @@ jobs:
           name: snyk-cartservice-report
           path: |
             snyk-report.json
-            snyk-report.html
+      - name: SonarQube Scan
+        run: |
+          cd cartservice
+          mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy:
     name: Deploy to AWS

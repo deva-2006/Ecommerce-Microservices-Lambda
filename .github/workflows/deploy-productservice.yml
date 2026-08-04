@@ -81,6 +81,13 @@ jobs:
             snyk-report.json
             snyk-report.html
 
+      - name: SonarQube Scan
+        run: |
+          cd productservice
+          mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
   deploy:
     name: Deploy to AWS
     needs: [build-and-test, security-scan]
