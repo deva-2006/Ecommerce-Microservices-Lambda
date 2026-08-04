@@ -1,6 +1,7 @@
 name: Deploy Order Service
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
