@@ -11,4 +11,4 @@ public class PaymentserviceApplication {
 	}
 }
 // AWS X-Ray Tracing enabled
-// CI/CD SonarQube plugin fix test v2
+// CI/CD SonarCloud organization scan test
