@@ -10,4 +10,4 @@ public class CartserviceApplication {
 	}
 }
 // AWS X-Ray Tracing enabled
-// CI/CD SonarQube pipeline trigger test
+// CI/CD SonarQube plugin fix test v2
