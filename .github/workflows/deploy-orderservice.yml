@@ -12,9 +12,9 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  build-and-test:
+    name: Build & Unit Test
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -36,57 +36,41 @@ jobs:
           cd orderservice
           mvn test
 
+      - name: Save Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: order-service-jar
+          path: orderservice/target/order-service-0.0.1-SNAPSHOT.jar
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
       - name: Install Snyk CLI
         uses: snyk/actions/setup@master
 
-      - name: Make Maven Wrapper Executable
-        run: chmod +x orderservice/mvnw
-
       - name: Run Snyk Security Scan (JSON Output)
         run: |
-          snyk test --file=orderservice/pom.xml --severity-threshold=high --json > snyk-report.json
+          snyk test --file=orderservice/pom.xml --severity-threshold=high --json > snyk-report.json || true
         env:
-          SNYK_TOKEN: ${{ secrets.devaSecretSnyk }}
+          SNYK_TOKEN: ${{ secrets.DEVASECRETSNYK }}
 
       - name: Convert JSON to HTML Report
         if: always()
         run: |
-          npm install -g snyk-to-html
-          snyk-to-html -i snyk-report.json -o snyk-report.html
-
-      - name: Print Security Summary
-        if: always()
-        run: |
           if [ -f snyk-report.json ]; then
-            echo "### Snyk Security Scan Summary" >> $GITHUB_STEP_SUMMARY
-            node -e "
-              try {
-                const fs = require('fs');
-                const report = JSON.parse(fs.readFileSync('snyk-report.json', 'utf8'));
-                const vulns = Array.isArray(report) ? report.flatMap(r => r.vulnerabilities || []) : (report.vulnerabilities || []);
-                const count = vulns.length;
-                console.log('==================================================');
-                console.log('TOTAL VULNERABILITIES FOUND:', count);
-                console.log('==================================================');
-                fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n* **Total High/Critical Vulnerabilities:** ' + count + '\n');
-                if (count > 0) {
-                  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n| Severity | Package | Title | Remediation |\n| --- | --- | --- | --- |\n');
-                  vulns.forEach(v => {
-                    const cleanTitle = (v.title || '').replace(/|/g, '\|');
-                    const cleanRemediation = (v.remediation || 'Upgrade dependency').replace(/\n/g, ' ').replace(/|/g, '\|');
-                    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '| ' + v.severity + ' | ' + v.packageName + ' | ' + cleanTitle + ' | ' + cleanRemediation + ' |\n');
-                  });
-                } else {
-                  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n:white_check_mark: No high-severity vulnerabilities found!\n');
-                }
-              } catch (e) {
-                console.error('Failed to parse Snyk report:', e);
-              }
-            "
-          else
-            echo "Snyk report not found."
+            npx snyk-to-html -i snyk-report.json -o snyk-report.html
           fi
-
 
       - name: Upload Snyk Security Report
         uses: actions/upload-artifact@v4
@@ -96,6 +80,17 @@ jobs:
           path: |
             snyk-report.json
             snyk-report.html
+
+  deploy:
+    name: Deploy to AWS
+    needs: [build-and-test, security-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: order-service-jar
+          path: orderservice/target
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
