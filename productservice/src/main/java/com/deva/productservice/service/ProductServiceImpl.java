@@ -48,33 +48,30 @@ public class ProductServiceImpl implements ProductService {
         return toResponse(product);
     }
 
+    private static final String PRODUCT_NOT_FOUND_MSG = "Product not found: ";
+
     @Override
     public ProductResponseDTO getProductById(String productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Product not found: " + productId));
+                        PRODUCT_NOT_FOUND_MSG + productId));
         return toResponse(product);
     }
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
-
-        System.out.println("===== SERVICE START =====");
-
         List<Product> products = productRepository.findAll();
-
-        System.out.println("===== FINDALL SUCCESS =====");
 
         return products.stream()
                 .map(this::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public ProductResponseDTO updateProduct(String productId, ProductRequestDTO request) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Product not found: " + productId));
+                        PRODUCT_NOT_FOUND_MSG + productId));
         List<String> imageUrls = resolveImageUrls(request);
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -91,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(String productId) {
         productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Product not found: " + productId));
+                        PRODUCT_NOT_FOUND_MSG + productId));
         productRepository.delete(productId);
     }
 

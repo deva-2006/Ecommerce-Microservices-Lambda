@@ -76,8 +76,9 @@ class ProductRequestDTOTest {
 
         String result = dto.toString();
 
-        assertThat(result).contains("name=Test");
-        assertThat(result).contains("ProductRequestDTO");
+        assertThat(result)
+                .contains("name=Test")
+                .contains("ProductRequestDTO");
     }
 
     @Test

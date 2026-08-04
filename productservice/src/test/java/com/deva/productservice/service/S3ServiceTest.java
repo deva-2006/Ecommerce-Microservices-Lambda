@@ -38,8 +38,9 @@ class S3ServiceTest {
         method.setAccessible(true);
         String result = (String) method.invoke(s3Service, "photo.jpg");
 
-        assertThat(result).startsWith("products/");
-        assertThat(result).endsWith("-photo.jpg");
+        assertThat(result)
+                .startsWith("products/")
+                .endsWith("-photo.jpg");
     }
 
     @Test
@@ -59,9 +60,10 @@ class S3ServiceTest {
         method.setAccessible(true);
         String result = (String) method.invoke(s3Service, "doc.pdf");
 
-        assertThat(result).startsWith("products/");
-        assertThat(result).endsWith("-doc.pdf");
-        assertThat(result).contains("-doc.pdf");
+        assertThat(result)
+                .startsWith("products/")
+                .endsWith("-doc.pdf")
+                .contains("-doc.pdf");
     }
 
     @Test
@@ -79,8 +81,9 @@ class S3ServiceTest {
         method.setAccessible(true);
         String result = (String) method.invoke(s3Service, "products/uuid-img.png");
 
-        assertThat(result).startsWith("https://test-bucket.s3.amazonaws.com/");
-        assertThat(result).endsWith("products/uuid-img.png");
+        assertThat(result)
+                .startsWith("https://test-bucket.s3.amazonaws.com/")
+                .endsWith("products/uuid-img.png");
     }
 
     @Test

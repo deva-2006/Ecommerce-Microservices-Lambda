@@ -63,7 +63,7 @@ class XRayConfigTest {
             verify(chain).doFilter(request, response);
             verify(subsegment).putHttp(eq("request"), any());
             verify(subsegment).putHttp(eq("response"), any());
-            xray.verify(() -> AWSXRay.endSubsegment());
+            xray.verify(AWSXRay::endSubsegment);
         }
     }
 
@@ -75,7 +75,7 @@ class XRayConfigTest {
             config.doFilter(request, response, chain);
 
             verify(chain).doFilter(request, response);
-            xray.verify(() -> AWSXRay.endSubsegment(), never());
+            xray.verify(AWSXRay::endSubsegment, never());
         }
     }
 
@@ -90,7 +90,7 @@ class XRayConfigTest {
                     .hasMessageContaining("boom");
 
             verify(subsegment).addException(any(RuntimeException.class));
-            xray.verify(() -> AWSXRay.endSubsegment());
+            xray.verify(AWSXRay::endSubsegment);
         }
     }
 
@@ -104,7 +104,7 @@ class XRayConfigTest {
                     .isInstanceOf(RuntimeException.class)
                     .hasMessageContaining("boom");
 
-            xray.verify(() -> AWSXRay.endSubsegment(), never());
+            xray.verify(AWSXRay::endSubsegment, never());
         }
     }
 }

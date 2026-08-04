@@ -73,9 +73,10 @@ class UploadUrlResponseDTOTest {
 
         String result = dto.toString();
 
-        assertThat(result).contains("uploadUrl=https://upload");
-        assertThat(result).contains("publicUrl=https://public");
-        assertThat(result).contains("UploadUrlResponseDTO");
+        assertThat(result)
+                .contains("uploadUrl=https://upload")
+                .contains("publicUrl=https://public")
+                .contains("UploadUrlResponseDTO");
     }
 
     @Test

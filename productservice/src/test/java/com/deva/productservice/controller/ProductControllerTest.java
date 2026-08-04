@@ -29,10 +29,10 @@ class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @org.springframework.test.context.bean.override.mockito.MockitoBean
     private ProductService productService;
 
-    @MockBean
+    @org.springframework.test.context.bean.override.mockito.MockitoBean
     private S3Service s3Service;
 
     @Autowired

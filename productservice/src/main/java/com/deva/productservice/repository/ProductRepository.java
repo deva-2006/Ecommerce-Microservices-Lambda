@@ -35,7 +35,7 @@ public class ProductRepository {
     }
 
     public List<Product> findAll() {
-        return table.scan().items().stream().collect(Collectors.toList());
+        return table.scan().items().stream().toList();
     }
 
     public void delete(String productId) {

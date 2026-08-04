@@ -99,9 +99,10 @@ class ProductResponseDTOTest {
 
         String result = dto.toString();
 
-        assertThat(result).contains("productId=1");
-        assertThat(result).contains("name=Laptop");
-        assertThat(result).contains("ProductResponseDTO");
+        assertThat(result)
+                .contains("productId=1")
+                .contains("name=Laptop")
+                .contains("ProductResponseDTO");
     }
 
     @Test

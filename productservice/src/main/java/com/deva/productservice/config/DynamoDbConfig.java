@@ -3,21 +3,14 @@ package com.deva.productservice.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import com.amazonaws.xray.interceptors.TracingInterceptor;
-import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
 
-
-import java.net.URI;
 @Configuration
-
 public class DynamoDbConfig {
 
-    @Value("${aws.dynamodb.region}")
+    @Value("${aws.dynamodb.region:us-east-1}")
     private String region;
 
     @Bean
