@@ -10,4 +10,4 @@ public class InventoryserviceApplication {
 	}
 }
 // AWS X-Ray Tracing enabled
-// CI/CD SonarCloud organization scan test
+// CI/CD SonarCloud dashboard integration test

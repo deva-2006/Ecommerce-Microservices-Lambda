@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// CI/CD SonarCloud organization scan test
+// CI/CD SonarCloud dashboard integration test
 public class NotificationSqsHandler implements RequestHandler<SQSEvent, Void> {
 
 
