@@ -10,4 +10,4 @@ public class InventoryserviceApplication {
 	}
 }
 // AWS X-Ray Tracing enabled
-// CI/CD Multi-job pipeline trigger test
+// CI/CD SonarQube pipeline trigger test

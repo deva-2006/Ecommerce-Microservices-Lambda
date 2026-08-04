@@ -1,0 +1,449 @@
+{
+  "widgets": [
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# API Gateway - Microservice API (Default Stage)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": false,
+        "metrics": [
+          [ "AWS/ApiGateway", "Latency", "ApiId", "73svzbgcrf", "Stage", "$default", { "id": "lat_avg", "label": "Latency (avg)", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/ApiGateway", "Latency", "ApiId", "73svzbgcrf", "Stage", "$default", { "id": "lat_p90", "label": "Latency (p90)", "stat": "p90", "region": "us-east-1" } ],
+          [ "AWS/ApiGateway", "Latency", "ApiId", "73svzbgcrf", "Stage", "$default", { "id": "lat_p99", "label": "Latency (p99)", "stat": "p99", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Latency (ms)",
+        "yAxis": { "left": { "label": "ms" } }
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/ApiGateway", "4xx", "ApiId", "73svzbgcrf", "Stage", "$default", { "id": "e_4xx", "label": "4xx Errors", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "4XX Errors (sum)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/ApiGateway", "5xx", "ApiId", "73svzbgcrf", "Stage", "$default", { "id": "e_5xx", "label": "5xx Errors", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "5XX Errors (sum)"
+      }
+    },
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# Lambda - Invocations, Errors, Throttles, Duration"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/Lambda", "Invocations", "FunctionName", "product-service", { "id": "inv1", "label": "product-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Invocations", "FunctionName", "inventory-service", { "id": "inv2", "label": "inventory-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Invocations", "FunctionName", "cart-service", { "id": "inv3", "label": "cart-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Invocations", "FunctionName", "order-service", { "id": "inv4", "label": "order-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Invocations", "FunctionName", "payment-service", { "id": "inv5", "label": "payment-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Invocations", "FunctionName", "review-service", { "id": "inv6", "label": "review-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Invocations", "FunctionName", "notification-consumer-lambda", { "id": "inv7", "label": "notification-consumer-lambda", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Invocations", "FunctionName", "order-payment-consumer-lambda", { "id": "inv8", "label": "order-payment-consumer-lambda", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Invocations (sum)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/Lambda", "Errors", "FunctionName", "product-service", { "id": "err1", "label": "product-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Errors", "FunctionName", "inventory-service", { "id": "err2", "label": "inventory-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Errors", "FunctionName", "cart-service", { "id": "err3", "label": "cart-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Errors", "FunctionName", "order-service", { "id": "err4", "label": "order-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Errors", "FunctionName", "payment-service", { "id": "err5", "label": "payment-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Errors", "FunctionName", "review-service", { "id": "err6", "label": "review-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Errors", "FunctionName", "notification-consumer-lambda", { "id": "err7", "label": "notification-consumer-lambda", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Errors", "FunctionName", "order-payment-consumer-lambda", { "id": "err8", "label": "order-payment-consumer-lambda", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Errors (sum)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/Lambda", "Throttles", "FunctionName", "product-service", { "id": "thr1", "label": "product-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Throttles", "FunctionName", "inventory-service", { "id": "thr2", "label": "inventory-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Throttles", "FunctionName", "cart-service", { "id": "thr3", "label": "cart-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Throttles", "FunctionName", "order-service", { "id": "thr4", "label": "order-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Throttles", "FunctionName", "payment-service", { "id": "thr5", "label": "payment-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Throttles", "FunctionName", "review-service", { "id": "thr6", "label": "review-service", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Throttles", "FunctionName", "notification-consumer-lambda", { "id": "thr7", "label": "notification-consumer-lambda", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Throttles", "FunctionName", "order-payment-consumer-lambda", { "id": "thr8", "label": "order-payment-consumer-lambda", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Throttles (sum)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": false,
+        "metrics": [
+          [ "AWS/Lambda", "Duration", "FunctionName", "product-service", { "id": "dur1", "label": "product-service", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "inventory-service", { "id": "dur2", "label": "inventory-service", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "cart-service", { "id": "dur3", "label": "cart-service", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "order-service", { "id": "dur4", "label": "order-service", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "payment-service", { "id": "dur5", "label": "payment-service", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "review-service", { "id": "dur6", "label": "review-service", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "notification-consumer-lambda", { "id": "dur7", "label": "notification-consumer-lambda", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "order-payment-consumer-lambda", { "id": "dur8", "label": "order-payment-consumer-lambda", "stat": "Average", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Duration Average (ms)",
+        "yAxis": { "left": { "label": "ms" } }
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": false,
+        "metrics": [
+          [ "AWS/Lambda", "Duration", "FunctionName", "product-service", { "id": "p99_1", "label": "product-service", "stat": "p99", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "inventory-service", { "id": "p99_2", "label": "inventory-service", "stat": "p99", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "cart-service", { "id": "p99_3", "label": "cart-service", "stat": "p99", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "order-service", { "id": "p99_4", "label": "order-service", "stat": "p99", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "payment-service", { "id": "p99_5", "label": "payment-service", "stat": "p99", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "review-service", { "id": "p99_6", "label": "review-service", "stat": "p99", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "notification-consumer-lambda", { "id": "p99_7", "label": "notification-consumer-lambda", "stat": "p99", "region": "us-east-1" } ],
+          [ "AWS/Lambda", "Duration", "FunctionName", "order-payment-consumer-lambda", { "id": "p99_8", "label": "order-payment-consumer-lambda", "stat": "p99", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Duration P99 (ms)",
+        "yAxis": { "left": { "label": "ms" } }
+      }
+    },
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# DynamoDB - All Tables"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"ReadThrottleEvents\"', 'Sum', 300)", "id": "ddb_rte", "region": "us-east-1" } ],
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"WriteThrottleEvents\"', 'Sum', 300)", "id": "ddb_wte", "region": "us-east-1" } ],
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"ThrottledRequests\"', 'Sum', 300)", "id": "ddb_tr", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Throttle Events (sum, all tables)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"SystemErrors\"', 'Sum', 300)", "id": "ddb_se", "region": "us-east-1" } ],
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"UserErrors\"', 'Sum', 300)", "id": "ddb_ue", "region": "us-east-1" } ],
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"ConditionalCheckFailedRequests\"', 'Sum', 300)", "id": "ddb_ccf", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Errors (sum, all tables)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"ConsumedReadCapacityUnits\"', 'Sum', 300)", "id": "ddb_rcu", "region": "us-east-1" } ],
+          [ { "expression": "SEARCH('Namespace=\"AWS/DynamoDB\" MetricName=\"ConsumedWriteCapacityUnits\"', 'Sum', 300)", "id": "ddb_wcu", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Consumed Capacity Units (sum, all tables)"
+      }
+    },
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# CloudFront - Ecommerce Frontend Distribution"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/CloudFront", "Requests", "DistributionId", "E1UOOQSQUW4GDB", "Region", "Global", { "id": "cf_req", "label": "Requests", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Requests (sum)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": false,
+        "metrics": [
+          [ "AWS/CloudFront", "4xxErrorRate", "DistributionId", "E1UOOQSQUW4GDB", "Region", "Global", { "id": "cf_4xx", "label": "4xx Error Rate", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/CloudFront", "5xxErrorRate", "DistributionId", "E1UOOQSQUW4GDB", "Region", "Global", { "id": "cf_5xx", "label": "5xx Error Rate", "stat": "Average", "region": "us-east-1" } ],
+          [ "AWS/CloudFront", "TotalErrorRate", "DistributionId", "E1UOOQSQUW4GDB", "Region", "Global", { "id": "cf_err", "label": "Total Error Rate", "stat": "Average", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Error Rate (%)",
+        "yAxis": { "left": { "label": "%", "min": 0 } }
+      }
+    },
+    {
+      "type": "metric",
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/CloudFront", "BytesDownloaded", "DistributionId", "E1UOOQSQUW4GDB", "Region", "Global", { "id": "cf_bytes", "label": "Bytes Downloaded", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Bytes Downloaded (sum)",
+        "yAxis": { "left": { "label": "bytes" } }
+      }
+    },
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# SNS - Payment Events Topic"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/SNS", "NumberOfMessagesPublished", "TopicName", "payment-events", { "id": "sns_pub", "label": "Published", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SNS", "NumberOfNotificationsDelivered", "TopicName", "payment-events", { "id": "sns_del", "label": "Delivered", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SNS", "NumberOfNotificationsFailed", "TopicName", "payment-events", { "id": "sns_fail", "label": "Failed", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Published / Delivered / Failed (sum)"
+      }
+    },
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# SQS - Notification and Order Payment Queues"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": true,
+        "metrics": [
+          [ "AWS/SQS", "NumberOfMessagesSent", "QueueName", "notification-queue", { "id": "sqs_sent_nq", "label": "notification-queue Sent", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "NumberOfMessagesReceived", "QueueName", "notification-queue", { "id": "sqs_recv_nq", "label": "notification-queue Received", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "NumberOfMessagesDeleted", "QueueName", "notification-queue", { "id": "sqs_del_nq", "label": "notification-queue Deleted", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "NumberOfMessagesSent", "QueueName", "notification-dlq", { "id": "sqs_sent_ndq", "label": "notification-dlq Sent", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "NumberOfMessagesSent", "QueueName", "order-payments-success-queue", { "id": "sqs_sent_opq", "label": "order-payments-success-queue Sent", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "NumberOfMessagesReceived", "QueueName", "order-payments-success-queue", { "id": "sqs_recv_opq", "label": "order-payments-success-queue Received", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "NumberOfMessagesDeleted", "QueueName", "order-payments-success-queue", { "id": "sqs_del_opq", "label": "order-payments-success-queue Deleted", "stat": "Sum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "NumberOfMessagesSent", "QueueName", "order-payment-success-dlq", { "id": "sqs_sent_odq", "label": "order-payment-success-dlq Sent", "stat": "Sum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Messages Sent / Received / Deleted (sum)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": false,
+        "metrics": [
+          [ "AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", "notification-queue", { "id": "depth_nq", "label": "notification-queue", "stat": "Maximum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", "notification-dlq", { "id": "depth_ndq", "label": "notification-dlq", "stat": "Maximum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", "order-payments-success-queue", { "id": "depth_opq", "label": "order-payments-success-queue", "stat": "Maximum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", "order-payment-success-dlq", { "id": "depth_odq", "label": "order-payment-success-dlq", "stat": "Maximum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Queue Depth Visible Messages (max)"
+      }
+    },
+    {
+      "type": "metric",
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "view": "timeSeries",
+        "stacked": false,
+        "metrics": [
+          [ "AWS/SQS", "ApproximateAgeOfOldestMessage", "QueueName", "notification-queue", { "id": "age_nq", "label": "notification-queue", "stat": "Maximum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "ApproximateAgeOfOldestMessage", "QueueName", "notification-dlq", { "id": "age_ndq", "label": "notification-dlq", "stat": "Maximum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "ApproximateAgeOfOldestMessage", "QueueName", "order-payments-success-queue", { "id": "age_opq", "label": "order-payments-success-queue", "stat": "Maximum", "region": "us-east-1" } ],
+          [ "AWS/SQS", "ApproximateAgeOfOldestMessage", "QueueName", "order-payment-success-dlq", { "id": "age_odq", "label": "order-payment-success-dlq", "stat": "Maximum", "region": "us-east-1" } ]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "title": "Oldest Message Age (sec, max)",
+        "yAxis": { "left": { "label": "sec" } }
+      }
+    },
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# X-Ray - Trace Map, Service Health, Traces"
+      }
+    },
+    {
+      "type": "serviceMap",
+      "width": 24,
+      "height": 15,
+      "properties": {
+        "region": "us-east-1"
+      }
+    },
+    {
+      "type": "serviceTable",
+      "width": 24,
+      "height": 8,
+      "properties": {
+        "region": "us-east-1"
+      }
+    },
+    {
+      "type": "trace",
+      "width": 24,
+      "height": 8,
+      "properties": {
+        "region": "us-east-1"
+      }
+    },
+    {
+      "type": "text",
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "# CloudWatch Logs - Lambda Error Events"
+      }
+    },
+    {
+      "type": "log",
+      "width": 12,
+      "height": 8,
+      "properties": {
+        "view": "timeSeries",
+        "region": "us-east-1",
+        "query": "eyJsb2dHcm91cHMiOlsiL2F3cy9sYW1iZGEvY2FydC1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvaW52ZW50b3J5LXNlcnZpY2UiLCIvYXdzL2xhbWJkYS9ub3RpZmljYXRpb24tY29uc3VtZXItbGFtYmRhIiwiL2F3cy9sYW1iZGEvb3JkZXItcGF5bWVudC1jb25zdW1lci1sYW1iZGEiLCIvYXdzL2xhbWJkYS9vcmRlci1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvcGF5bWVudC1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvcHJvZHVjdC1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvcmV2aWV3LXNlcnZpY2UiXSwicXVlcnlTdHJpbmciOiJmaWVsZHMgQHRpbWVzdGFtcCwgQG1lc3NhZ2UgfCBmaWx0ZXIgQG1lc3NhZ2UgbGlrZSAvKD9pKShlcnJvcnxleGNlcHRpb258ZmFpbCkvIHwgc3RhdHMgY291bnQoKSBieSBiaW4oMWgpIn0=",
+        "title": "Error / Exception / Fail log events per hour"
+      }
+    },
+    {
+      "type": "log",
+      "width": 12,
+      "height": 8,
+      "properties": {
+        "view": "table",
+        "region": "us-east-1",
+        "query": "eyJsb2dHcm91cHMiOlsiL2F3cy9sYW1iZGEvY2FydC1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvaW52ZW50b3J5LXNlcnZpY2UiLCIvYXdzL2xhbWJkYS9ub3RpZmljYXRpb24tY29uc3VtZXItbGFtYmRhIiwiL2F3cy9sYW1iZGEvb3JkZXItcGF5bWVudC1jb25zdW1lci1sYW1iZGEiLCIvYXdzL2xhbWJkYS9vcmRlci1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvcGF5bWVudC1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvcHJvZHVjdC1zZXJ2aWNlIiwiL2F3cy9sYW1iZGEvcmV2aWV3LXNlcnZpY2UiXSwicXVlcnlTdHJpbmciOiJmaWVsZHMgQHRpbWVzdGFtcCwgQGxvZywgQGxvZ1N0cmVhbSwgQG1lc3NhZ2UgfCBmaWx0ZXIgQG1lc3NhZ2UgbGlrZSAvKD9pKShlcnJvcnxleGNlcHRpb258ZmFpbCkvIHwgc29ydCBAdGltZXN0YW1wIGRlc2MgfCBsaW1pdCAyMCJ9",
+        "title": "Latest 20 error events"
+      }
+    }
+  ]
+}

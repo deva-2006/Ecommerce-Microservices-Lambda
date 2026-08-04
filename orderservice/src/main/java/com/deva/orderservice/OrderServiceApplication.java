@@ -10,3 +10,4 @@ public class OrderServiceApplication {
 	}
 }
 // AWS X-Ray Tracing enabled
+// CI/CD SonarQube pipeline trigger test
