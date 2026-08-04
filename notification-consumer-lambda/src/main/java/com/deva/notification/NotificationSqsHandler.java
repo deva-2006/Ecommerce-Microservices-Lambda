@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// CI/CD Multi-job pipeline trigger test
 public class NotificationSqsHandler implements RequestHandler<SQSEvent, Void> {
 
 

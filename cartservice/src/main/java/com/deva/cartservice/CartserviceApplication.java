@@ -10,3 +10,4 @@ public class CartserviceApplication {
 	}
 }
 // AWS X-Ray Tracing enabled
+// CI/CD Multi-job pipeline trigger test
