@@ -18,46 +18,49 @@ https://dhvfhexmyhpvv.cloudfront.net/
 
 ## Tech Stack
 
-### Backend
+### Backend & Microservices
 
 - Java 21
 - Spring Boot 3.2.5
 - Spring Data
-- OpenFeign
+- OpenFeign (Inter-service communication)
 - Lombok
-- REST APIs
 - Maven
 
-### Cloud Services
+### Cloud & Serverless Infrastructure (AWS)
 
-- AWS Lambda
-- Amazon API Gateway (HTTP API)
+- AWS Lambda Functions (Java 21 `StreamLambdaHandler`)
+- Amazon API Gateway (HTTP API v2)
 - Amazon DynamoDB (Enhanced Client)
-- Amazon Cognito
-- Amazon SNS
-- Amazon SQS
-- Amazon SES
-- Amazon S3 (Presigned URLs)
-- Amazon CloudFront
-- AWS IAM
+- Amazon Cognito User Pool (JWT Authorizer)
+- Amazon SNS (Event Publishing)
+- Amazon SQS (Asynchronous Event Consumer Queues)
+- Amazon SES (Order Email Notifications)
+- Amazon S3 (Deployment Artifacts & Image Uploads)
+- Amazon CloudFront (CDN)
+- AWS X-Ray (Distributed Tracing & Service Maps)
+- AWS IAM (Short-lived OIDC Role Authentication)
 
-### Deployment
+### CI/CD & Security
 
-- aws-serverless-java-container (Spring Boot 3)
-- Maven Shade Plugin (Fat JAR packaging)
+- GitHub Actions Monorepo Workflows
+- Multi-Job DAG Pipelines (`Build & Test`, `Security Scan`, `Deploy to AWS`)
+- Snyk Vulnerability & Dependency Scanning
+- Maven Shade Plugin (Fat JAR Packaging)
 
 ---
 
 ## Microservices
 
-| Service | Responsibility |
-|---------|---------------|
-| Product | Product Management, S3 Image Upload |
-| Inventory | Stock Management |
-| Cart | Shopping Cart |
-| Order | Order Processing, Payment Event Publishing |
-| Payment | Payment Processing, SNS Event Publishing |
-| Notification | Email Notifications via SES |
+| Service | Responsibility | Database Table |
+|---------|---------------|----------------|
+| **Product** | Product Catalog & Management, S3 Image Upload | `Products` |
+| **Inventory** | Stock Level Management & Re-stocking | `Inventory` |
+| **Cart** | User Shopping Cart Management | `Cart` |
+| **Order** | Order Creation, Retrieval & Purchase Verification | `Orders` |
+| **Payment** | Payment Processing & SNS Event Publishing | `Payments` |
+| **Review** | Verified Buyer Product Reviews & Summary Aggregation | `reviews` |
+| **Notification** | Event Consumer & Email Dispatch via Amazon SES | — |
 
 ---
 
