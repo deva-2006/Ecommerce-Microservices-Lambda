@@ -85,7 +85,11 @@ jobs:
       - name: SonarQube Scan
         run: |
           cd paymentservice
-          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.organization=deva-2006 \
+            -Dsonar.projectKey=deva-2006_payment-service \
+            -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
