@@ -28,7 +28,7 @@ class DynamoDBConfigTest {
 
     @Test
     void dynamoDbEnhancedClient_wrapsGivenClient() {
-        DynamoDbClient dynamoDbClient = DynamoDbClient.create();
+        DynamoDbClient dynamoDbClient = org.mockito.Mockito.mock(DynamoDbClient.class);
 
         DynamoDbEnhancedClient enhancedClient = config.dynamoDbEnhancedClient(dynamoDbClient);
 
