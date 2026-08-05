@@ -1,5 +1,5 @@
 package com.deva.notification;
-// Run SonarCloud Public Scan
+// Trigger fresh SonarCloud scan for notification-consumer-lambda
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
