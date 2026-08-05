@@ -129,7 +129,36 @@ jobs:
             --function-name payment-service \
             --s3-bucket deva-lambda-artifacts \
             --s3-key payment-service.jar
-      - name: Publish Lambda Version (activates SnapStart snapshot)
+      - name: Publish Lambda Version & Move Prod Alias
         run: |
           aws lambda wait function-updated --function-name payment-service --region us-east-1
-          aws lambda publish-version --function-name payment-service --region us-east-1
+          VERSION=$(aws lambda publish-version --function-name payment-service --region us-east-1 --query "Version" --output text)
+          echo "Published version: $VERSION"
+          
+          # Poll for SnapStart OptimizationStatus == On
+          STATUS=""
+          for i in $(seq 1 30); do
+            STATUS=$(aws lambda list-versions-by-function --function-name payment-service --region us-east-1 --query "Versions[?Version=='$VERSION'].SnapStart.OptimizationStatus | [0]" --output text)
+            echo "Waiting for SnapStart optimization on payment-service (v$VERSION), current status: $STATUS..."
+            if [ "$STATUS" = "On" ]; then break; fi
+            sleep 5
+          done
+          
+          if [ "$STATUS" != "On" ]; then
+            echo "Error: SnapStart optimization timed out or failed for payment-service (v$VERSION)"
+            exit 1
+          fi
+          
+          aws lambda update-alias --function-name payment-service --name prod --function-version $VERSION --region us-east-1
+          echo "Prod alias updated to v$VERSION for payment-service"
+          
+          # Clean up old versions, keeping current + 1 previous
+          VERSIONS=$(aws lambda list-versions-by-function --function-name payment-service --region us-east-1 --query "Versions[?Version!='\$LATEST'].Version | sort_by(@, &to_number(@))" --output text)
+          COUNT=$(echo $VERSIONS | wc -w)
+          if [ $COUNT -gt 2 ]; then
+            TO_DELETE=$(echo $VERSIONS | tr '\t' '\n' | head -n -2)
+            for v in $TO_DELETE; do
+              echo "Deleting old version v$v for payment-service..."
+              aws lambda delete-function --function-name payment-service --qualifier $v --region us-east-1 || true
+            done
+          fi
