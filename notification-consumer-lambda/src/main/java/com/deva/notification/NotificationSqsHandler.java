@@ -470,3 +470,4 @@ public class NotificationSqsHandler implements RequestHandler<SQSEvent, Void> {
 
 
 // AWS X-Ray Tracing enabled
+// dummy comment
