@@ -1,5 +1,5 @@
 package com.deva.paymentservice;
-// Trigger payment-service SonarCloud scan
+// Trigger fresh SonarCloud scan for payment-service
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
