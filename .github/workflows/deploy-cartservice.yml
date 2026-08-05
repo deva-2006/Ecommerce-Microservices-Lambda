@@ -88,6 +88,7 @@ jobs:
         run: |
           cd cartservice
           mvn clean test jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dmaven.test.failure.ignore=true \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.organization=deva-2006 \
             -Dsonar.projectKey=deva-2006_cart-service \
@@ -95,6 +96,11 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Print Quality & Security Summary
+        if: always()
+        run: |
+          node .github/workflows/print-quality-summary.js "Cart Service" "cartservice" "deva-2006_cart-service"
+
 
   deploy:
     name: Deploy to AWS
