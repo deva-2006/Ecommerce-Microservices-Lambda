@@ -129,6 +129,10 @@ jobs:
             --function-name order-service \
             --s3-bucket deva-lambda-artifacts \
             --s3-key order-service.jar
+      - name: Publish Lambda Version (activates SnapStart snapshot)
+        run: |
+          aws lambda wait function-updated --function-name order-service --region us-east-1
+          aws lambda publish-version --function-name order-service --region us-east-1
 
       - name: Deploy Order SQS Consumer Lambda
         run: |
@@ -136,3 +140,7 @@ jobs:
             --function-name order-payment-consumer-lambda \
             --s3-bucket deva-lambda-artifacts \
             --s3-key order-service.jar
+      - name: Publish Lambda Version (activates SnapStart snapshot)
+        run: |
+          aws lambda wait function-updated --function-name order-service --region us-east-1
+          aws lambda publish-version --function-name order-service --region us-east-1

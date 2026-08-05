@@ -129,3 +129,7 @@ jobs:
             --function-name notification-consumer-lambda \
             --s3-bucket deva-lambda-artifacts \
             --s3-key notification-consumer-lambda.jar
+      - name: Publish Lambda Version (activates SnapStart snapshot)
+        run: |
+          aws lambda wait function-updated --function-name notification-consumer-lambda --region us-east-1
+          aws lambda publish-version --function-name notification-consumer-lambda --region us-east-1
