@@ -1,5 +1,5 @@
 package com.deva.notification;
-// CI Trigger SonarCloud Scan
+// Trigger SonarCloud branch analysis scan
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;

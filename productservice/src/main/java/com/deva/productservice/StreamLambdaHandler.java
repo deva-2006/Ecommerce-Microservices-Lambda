@@ -1,4 +1,5 @@
 package com.deva.productservice;
+// Trigger SonarCloud branch analysis scan
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
