@@ -1,4 +1,5 @@
 package com.deva.orderservice;
+// CI Trigger SonarCloud Scan
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
