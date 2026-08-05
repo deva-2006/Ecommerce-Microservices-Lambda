@@ -1,5 +1,5 @@
 package com.deva.productservice;
-// Auto-create SonarCloud project on main branch
+// Run SonarCloud Public Scan
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
