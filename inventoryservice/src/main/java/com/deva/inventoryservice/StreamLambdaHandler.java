@@ -1,3 +1,4 @@
+// Trigger full SnapStart prod deployment pipeline
 package com.deva.inventoryservice;
 // Enable JaCoCo Code Coverage in SonarScan
 
