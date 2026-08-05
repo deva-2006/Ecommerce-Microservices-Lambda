@@ -1,5 +1,5 @@
 package com.deva.orderservice;
-// Run SonarCloud Public Scan
+// Enable JaCoCo Code Coverage in SonarScan
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;

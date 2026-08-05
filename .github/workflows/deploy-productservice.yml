@@ -87,7 +87,7 @@ jobs:
       - name: SonarQube Scan
         run: |
           cd productservice
-          mvn clean test-compile org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          mvn clean test org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.organization=deva-2006 \
             -Dsonar.projectKey=deva-2006_product-service \

@@ -1,5 +1,5 @@
 package com.deva.paymentservice;
-// Trigger fresh SonarCloud scan for payment-service
+// Enable JaCoCo Code Coverage in SonarScan
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;

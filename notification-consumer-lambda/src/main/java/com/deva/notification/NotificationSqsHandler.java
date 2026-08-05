@@ -1,5 +1,5 @@
 package com.deva.notification;
-// Trigger fresh SonarCloud scan for notification-consumer-lambda
+// Enable JaCoCo Code Coverage in SonarScan
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
