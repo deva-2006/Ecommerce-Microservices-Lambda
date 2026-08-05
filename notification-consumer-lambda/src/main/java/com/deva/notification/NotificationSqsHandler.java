@@ -1,5 +1,5 @@
 package com.deva.notification;
-// Trigger SonarCloud branch analysis scan
+// Auto-create SonarCloud project on main branch
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;

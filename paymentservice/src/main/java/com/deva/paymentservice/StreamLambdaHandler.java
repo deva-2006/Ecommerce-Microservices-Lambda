@@ -1,5 +1,5 @@
 package com.deva.paymentservice;
-// Trigger SonarCloud branch analysis scan
+// Auto-create SonarCloud project on main branch
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
