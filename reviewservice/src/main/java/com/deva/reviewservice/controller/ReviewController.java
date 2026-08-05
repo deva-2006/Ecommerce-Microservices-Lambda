@@ -41,6 +41,13 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getReviewSummaryByProductId(productId));
     }
 
+    @PostMapping("/summaries")
+    public ResponseEntity<java.util.Map<String, ReviewSummaryDTO>> getBatchReviewSummaries(
+            @RequestBody com.deva.reviewservice.dto.BatchReviewSummaryRequestDTO request) {
+        List<String> pids = request != null ? request.getProductIds() : java.util.Collections.emptyList();
+        return ResponseEntity.ok(reviewService.getBatchReviewSummaries(pids));
+    }
+
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<Void> deleteReview(
             @AuthUserId String userId,

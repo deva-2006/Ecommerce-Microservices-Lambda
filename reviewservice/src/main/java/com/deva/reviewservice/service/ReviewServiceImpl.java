@@ -96,6 +96,20 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public Map<String, ReviewSummaryDTO> getBatchReviewSummaries(List<String> productIds) {
+        Map<String, ReviewSummaryDTO> result = new HashMap<>();
+        if (productIds == null || productIds.isEmpty()) {
+            return result;
+        }
+        for (String pid : productIds) {
+            if (pid != null && !pid.isBlank()) {
+                result.put(pid, getReviewSummaryByProductId(pid));
+            }
+        }
+        return result;
+    }
+
+    @Override
     public void deleteReview(String userId, String reviewId) {
         Review r = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Review not found"));
