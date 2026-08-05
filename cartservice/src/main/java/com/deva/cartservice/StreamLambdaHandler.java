@@ -1,5 +1,5 @@
 package com.deva.cartservice;
-// Enable JaCoCo Code Coverage in SonarScan
+// Enable SnapStart production alias deployment with automatic version cleanup
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
