@@ -19,17 +19,21 @@ public class PaymentSuccessSqsHandler implements RequestHandler<SQSEvent, Void> 
 
     @Override
     public Void handleRequest(SQSEvent event, Context lambdaContext) {
-        for (SQSEvent.SQSMessage msg : event.getRecords()) {
-            try {
+        com.amazonaws.xray.entities.Subsegment subsegment = com.amazonaws.xray.AWSXRay.beginSubsegment("handlePostPaymentSuccess");
+        try {
+            for (SQSEvent.SQSMessage msg : event.getRecords()) {
                 JsonNode snsEnvelope = objectMapper.readTree(msg.getBody());
                 String innerMessage = snsEnvelope.get("Message").asText();
                 JsonNode payload = objectMapper.readTree(innerMessage);
                 String orderId = payload.get("orderId").asText();
 
                 orderService.handlePostPaymentSuccess(orderId, null);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed processing SQS message: " + msg.getMessageId(), e);
             }
+        } catch (Exception e) {
+            if (subsegment != null) subsegment.recordException(e);
+            throw new RuntimeException("Failed processing SQS message: " + msg.getMessageId(), e);
+        } finally {
+            if (subsegment != null) com.amazonaws.xray.AWSXRay.endSubsegment();
         }
         return null;
     }
