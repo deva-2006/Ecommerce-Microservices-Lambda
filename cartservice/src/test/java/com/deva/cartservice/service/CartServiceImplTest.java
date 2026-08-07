@@ -157,12 +157,12 @@ class CartServiceImplTest {
     }
 
     @Test
-    void getCartByUserId_empty_throwsResourceNotFound() {
+    void getCartByUserId_empty_returnsEmptyList() {
         when(cartRepository.findByUserId("user-1")).thenReturn(Collections.emptyList());
 
-        assertThatThrownBy(() -> cartService.getCartByUserId("user-1"))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("No cart items found");
+        List<CartResponseDTO> result = cartService.getCartByUserId("user-1");
+
+        assertThat(result).isEmpty();
     }
 
     @Test

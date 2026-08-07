@@ -68,9 +68,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartResponseDTO> getCartByUserId(String userId) {
         List<Cart> items = cartRepository.findByUserId(userId);
-        if (items.isEmpty()) {
-            throw new ResourceNotFoundException("No cart items found for userId: " + userId);
-        }
         return items.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
