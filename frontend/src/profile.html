@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopVibe — Profile</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%234f46e5'/><path d='M21 11.5C21 9.567 19.433 8 17.5 8H13.5C11.567 8 10 9.567 10 11.5C10 13.433 11.567 15 13.5 15H18.5C20.433 15 22 16.567 22 18.5C22 20.433 20.433 22 18.5 22H14.5C12.567 22 11 20.433 11 18.5' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script>document.documentElement.setAttribute("data-theme", localStorage.getItem("theme-preference") || "dark");</script>
+</head>
+<body>
+  <div class="bg-particles">
+    <div class="bg-particle"></div><div class="bg-particle"></div><div class="bg-particle"></div>
+    <div class="bg-particle"></div><div class="bg-particle"></div><div class="bg-particle"></div>
+  </div>
+  <div id="navbar"></div>
+
+  <div class="container" style="max-width: 1200px; padding-top: var(--space-4); padding-bottom: var(--space-8);">
+    <p id="msg" class="mt-2"></p>
+    <div id="profileContent" style="display:none"></div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script type="module" src="/js/bg-effects.js"></script>
+  <script type="module" src="/js/profile.js"></script>
+</body>
+</html>

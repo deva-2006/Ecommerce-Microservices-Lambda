@@ -32,9 +32,22 @@ build/
 ### VS Code ###
 .vscode/
 
+### Node / Frontend ###
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.env
+**/.env
+.env.local
+.env.*.local
+.aider*
+**/.aider*
+
 ### OS Files ###
 .DS_Store
 Thumbs.db
 
 ### Logs ###
 *.log
+

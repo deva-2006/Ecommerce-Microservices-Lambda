@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopVibe — Confirm Account</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%234f46e5'/><path d='M21 11.5C21 9.567 19.433 8 17.5 8H13.5C11.567 8 10 9.567 10 11.5C10 13.433 11.567 15 13.5 15H18.5C20.433 15 22 16.567 22 18.5C22 20.433 20.433 22 18.5 22H14.5C12.567 22 11 20.433 11 18.5' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script>document.documentElement.setAttribute("data-theme", localStorage.getItem("theme-preference") || "light");</script>
+</head>
+<body class="no-header">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">S</div>
+        <h2 class="auth-title">Verify your account</h2>
+        <p class="auth-subtitle">Enter the code sent to your email</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email address</label>
+        <input type="email" id="email" class="form-input" placeholder="you@example.com" autocomplete="email" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="code">Verification code</label>
+        <input type="text" id="code" class="form-input" placeholder="Enter 6-digit code" />
+      </div>
+
+      <button id="confirmBtn" class="btn btn-primary btn-block btn-lg mt-2">Verify Account</button>
+
+      <p id="msg" class="mt-2"></p>
+
+      <button id="resendBtn" class="btn btn-ghost btn-sm mt-1" style="width:100%;">Resend Code</button>
+
+      <p class="auth-footer">
+        <a href="/login.html">Back to sign in</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module" src="/js/bg-effects.js"></script>
+  <script type="module" src="/js/confirm.js"></script>
+</body>
+</html>

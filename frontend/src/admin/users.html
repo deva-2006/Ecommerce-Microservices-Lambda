@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopVibe — Admin Users</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%234f46e5'/><path d='M21 11.5C21 9.567 19.433 8 17.5 8H13.5C11.567 8 10 9.567 10 11.5C10 13.433 11.567 15 13.5 15H18.5C20.433 15 22 16.567 22 18.5C22 20.433 20.433 22 18.5 22H14.5C12.567 22 11 20.433 11 18.5' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script>document.documentElement.setAttribute("data-theme", localStorage.getItem("theme-preference") || "light");</script>
+</head>
+<body class="admin-page">
+  <div class="bg-particles">
+    <div class="bg-particle"></div><div class="bg-particle"></div><div class="bg-particle"></div>
+    <div class="bg-particle"></div><div class="bg-particle"></div><div class="bg-particle"></div>
+  </div>
+  <div id="navbar"></div>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-title">Management</div>
+      <button class="admin-sidebar-toggle" id="adminSidebarToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        Menu
+      </button>
+      <ul class="admin-nav">
+        <li><a href="/admin/dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </a></li>
+        <li><a href="/admin/products.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+          Products
+        </a></li>
+        <li><a href="/admin/inventory.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          Inventory
+        </a></li>
+        <li><a href="/admin/orders.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Orders
+        </a></li>
+        <li><a href="/admin/users.html" class="active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Users
+        </a></li>
+        <li><a href="/admin/reviews.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Reviews
+        </a></li>
+      </ul>
+      <div class="admin-nav-divider"></div>
+      <ul class="admin-nav">
+        <li><a href="/home.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          View Store
+        </a></li>
+      </ul>
+    </aside>
+
+    <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop"></div>
+    <main class="admin-content">
+      <div class="admin-page-header">
+        <div>
+          <h1 class="admin-page-title">Users & Customers</h1>
+          <p class="admin-page-subtitle">View registered customers, order volume, and total lifetime spend</p>
+        </div>
+      </div>
+
+      <input id="searchInput" class="form-input" placeholder="Search by customer email, name, or user ID..." style="margin-bottom:16px;" />
+
+      <p id="msg"></p>
+      <div id="usersList" class="admin-product-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));"></div>
+    </main>
+  </div>
+  <div id="footer"></div>
+
+  <script type="module" src="/js/bg-effects.js"></script>
+  <script type="module" src="/js/admin-users.js"></script>
+</body>
+</html>
