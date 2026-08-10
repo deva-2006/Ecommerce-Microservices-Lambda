@@ -306,35 +306,23 @@ terraform apply
 
 ---
 
-### 2. Running Backend Microservices Locally
+### 2. Local Microservice Development & Testing
 
-Each Spring Boot service can be started locally:
+> [!NOTE]
+> Inter-service communication relies on **OpenFeign** routed through the **AWS API Gateway** URL (`gateway.url`).
+> To run a microservice locally and connect it to downstream services:
+>
+> 1. Deploy the cloud infrastructure via Terraform (Step 1).
+> 2. Set the `gateway.url` environment variable to your deployed API Gateway URL:
+>    ```bash
+>    export GATEWAY_URL=https://<your-api-id>.execute-api.us-east-1.amazonaws.com
+>    ```
+> 3. Launch the desired microservice locally:
+>    ```bash
+>    cd productservice
+>    mvn clean spring-boot:run
+>    ```
 
-```bash
-# Product Service (Port 8081)
-cd productservice
-mvn clean spring-boot:run
-
-# Cart Service (Port 8082)
-cd cartservice
-mvn clean spring-boot:run
-
-# Payment Service (Port 8083)
-cd paymentservice
-mvn clean spring-boot:run
-
-# Order Service (Port 8084)
-cd orderservice
-mvn clean spring-boot:run
-
-# Inventory Service (Port 8085)
-cd inventoryservice
-mvn clean spring-boot:run
-
-# Review Service (Port 8086)
-cd reviewservice
-mvn clean spring-boot:run
-```
 
 ---
 
