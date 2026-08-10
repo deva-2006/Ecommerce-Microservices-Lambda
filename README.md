@@ -279,13 +279,102 @@ AWS Lambda
 Amazon API Gateway
         │
         ▼
-Amazon Cognito JWT Authorizer
-        │
-        ▼
-Client
+---
+
+## How to Run
+
+### Prerequisites
+
+- **Java 21** JDK installed
+- **Maven 3.9+** installed
+- **Node.js 20+** & **npm** installed
+- **AWS CLI v2** configured (`aws configure`)
+- **Terraform 1.5+** (for AWS infrastructure provisioning)
+
+---
+
+### 1. Provision AWS Infrastructure with Terraform
+
+Deploy all AWS cloud infrastructure (DynamoDB tables, Cognito user pool, API Gateway, SQS queues, SNS topics, S3 buckets, CloudFront distribution, and Lambda function configurations):
+
+```bash
+cd deva-microservices-infra
+terraform init
+terraform plan
+terraform apply
 ```
 
 ---
+
+### 2. Running Backend Microservices Locally
+
+Each Spring Boot service can be started locally:
+
+```bash
+# Product Service (Port 8081)
+cd productservice
+mvn clean spring-boot:run
+
+# Cart Service (Port 8082)
+cd cartservice
+mvn clean spring-boot:run
+
+# Payment Service (Port 8083)
+cd paymentservice
+mvn clean spring-boot:run
+
+# Order Service (Port 8084)
+cd orderservice
+mvn clean spring-boot:run
+
+# Inventory Service (Port 8085)
+cd inventoryservice
+mvn clean spring-boot:run
+
+# Review Service (Port 8086)
+cd reviewservice
+mvn clean spring-boot:run
+```
+
+---
+
+### 3. Running Frontend Locally
+
+Start the Vite web frontend dev server:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The application will be accessible at `http://localhost:5173`.
+
+---
+
+### 4. Building Deployment Fat JARs for Lambda
+
+To compile fat JAR artifacts manually:
+
+```bash
+cd productservice
+mvn clean package -DskipTests
+```
+
+The output JAR file will be placed in `target/product-service-0.0.1-SNAPSHOT.jar`.
+
+---
+
+### 5. Automated CI/CD Pipelines
+
+Pushing changes to the `main` branch automatically triggers GitHub Actions workflows:
+
+- **Microservice Workflows** (`deploy-*.yml`): Build, test, run Snyk security scans, deploy to AWS Lambda, and activate SnapStart.
+- **Frontend Workflow** (`deploy-frontend.yml`): Build production frontend bundle, deploy to S3, and invalidate CloudFront CDN cache.
+- **Infrastructure Workflow** (`deploy-infra.yml`): Validate, plan, and apply Terraform infrastructure changes automatically.
+
+---
+
 
 ## Testing
 
